@@ -22,7 +22,11 @@ $invoice = new Invoice($db);
 // check if more than 0 record found
 if(isset($_GET['input'])){
   $input = $_GET['input'];
-  $stmt = $invoice->searchInvoice($input);
+  if(isset($_GET['sort']) && isset($_GET['type']))
+    $stmt = $invoice->sortInvoice($input,$_GET['sort'],$_GET['type']);
+  else
+    $stmt = $invoice->searchInvoice($input);
+
   $num = $stmt->rowCount();
 
 
@@ -64,8 +68,6 @@ if($num>0){
             "status_faktury" => $status_faktury,
             "produkt" => $products_TEST
         );
-
-
 
         array_push($products_arr["Faktury"], $product_item);
     }
