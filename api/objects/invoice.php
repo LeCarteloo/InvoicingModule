@@ -126,5 +126,39 @@ class Invoice{
     return $stmt;
   }
 
+  function create(){
+
+    // query to insert record
+    $query = "INSERT INTO
+                " . $this->table_name . "
+            SET
+                numer_faktury=:numer_faktury, id_nabywca=:id_nabywca, id_status=:id_status, data_wystawienia=:data_wystawienia, data_sprzedazy=:data_sprzedazy";
+
+    // prepare query
+    $stmt = $this->conn->prepare($query);
+
+    // sanitize
+    $this->numer_faktury=htmlspecialchars(strip_tags($this->numer_faktury));
+    $this->id_nabywca=htmlspecialchars(strip_tags($this->id_nabywca));
+    $this->id_status=htmlspecialchars(strip_tags($this->id_status));
+    $this->data_wystawienia=htmlspecialchars(strip_tags($this->data_wystawienia));
+    $this->data_sprzedazy=htmlspecialchars(strip_tags($this->data_sprzedazy));
+
+    // bind values
+    $stmt->bindParam(":numer_faktury", $this->numer_faktury);
+    $stmt->bindParam(":id_nabywca", $this->id_nabywca);
+    $stmt->bindParam(":id_status", $this->id_status);
+    $stmt->bindParam(":data_wystawienia", $this->data_wystawienia);
+    $stmt->bindParam(":data_sprzedazy", $this->data_sprzedazy);
+
+    // execute query
+    if($stmt->execute()){
+        return true;
+    }
+
+    return false;
+
+}
+
 }
 ?>
