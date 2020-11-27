@@ -28,15 +28,14 @@ if($num>0){
     $products_arr=array();
     $products_arr["Faktury"]=array();
 
-    $products_TEST=array();
-    $products_TEST["Towary"]=array();
-
 
     // retrieve our table contents
     // fetch() is faster than fetchAll()
     // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
     $TEST;
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+      $products_TEST=array();
+      $products_TEST["Towary"]=array();
         // extract row
         // this will make $row['name'] to
         // just $name only
