@@ -53,6 +53,35 @@ class Invoice{
     return $stmt;
   }
 
+  /*
+  $query="Select pole From tabela Where nazwa Like '%{$_POST['phrase']}%' Or opis Like '%{$_POST['phrase']}%'";
+  */
+
+
+  function searchInvoice($input){
+    // select all query
+    $query = "SELECT f.*,n.*,s.*
+    FROM faktura f, nabywca n, status s
+    WHERE n.id_nabywca = f.id_nabywca
+    AND s.id_status = f.id_status
+    AND (n.NIP LIKE '$input'
+    OR  n.nazwa_nabywcy LIKE '$input'
+    OR n.email_nabywcy LIKE '$input'
+    OR f.numer_faktury LIKE '$input'
+    OR f.data_wystawienia LIKE '$input'
+    OR f.data_sprzedazy LIKE '$input'
+    OR s.status_faktury LIKE '$input'
+    OR n.adres LIKE '$input')";
+
+    // prepare query statement
+    $stmt = $this->connection->prepare($query);
+
+    // execute query
+    $stmt->execute();
+
+    return $stmt;
+  }
+
   function readTEST($id){
     // select all query
     $query = "SELECT f.*,ft.*,t.*
