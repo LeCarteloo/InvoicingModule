@@ -7,7 +7,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // database connection
 // include database and object files
 
-include_once 'D:\Xampp\htdocs\Project\config\database.php';
+include_once '../../config/database.php';
 include_once '../objects/invoice.php';
 
 // instantiate database and product object
@@ -19,6 +19,7 @@ $invoice = new Invoice($db);
 
 // query products
 $stmt = $invoice->read();
+$stmt2 = $invoice->readTEST();
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
@@ -42,14 +43,20 @@ if($num>0){
         // just $name only
         extract($row);
 
-        $products_TEST = array(
-          "nazwa" => $nazwa,
-          "cena" => $cena,
-          "jednostka_miary" => $jednostka_miary,
-          "stawka_vat" => $stawka_vat,
-          "status_faktury" => $status_faktury,
-          "ilosc" => $ilość
-        );
+        while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
+            extract($row2);
+
+            $products_item2 = array(
+              "nazwa" => $nazwa,
+              "cena" => $cena,
+              "jednostka_miary" => $jednostka_miary,
+              "stawka_vat" => $stawka_vat,
+              "ilosc" => $ilość
+            );
+
+            array_push($products_TEST["Towary"], $products_item2);
+        }
+
         $product_item=array(
             "numer_faktury" => $numer_faktury,
             "data_wystawienia" => $data_wystawienia,
@@ -58,8 +65,10 @@ if($num>0){
             "adres" => $adres,
             "NIP" => $NIP,
             "email_nabywcy" => $email_nabywcy,
+            "status_faktury" => $status_faktury,
             "produkt" => $products_TEST
         );
+
 
 
         array_push($products_arr["Faktury"], $product_item);

@@ -7,7 +7,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // database connection
 // include database and object files
 
-include_once 'D:\Xampp\htdocs\Project\config\database.php';
+include_once '../../config/database.php';
 include_once '../objects/contractor.php';
 
 // instantiate database and product object

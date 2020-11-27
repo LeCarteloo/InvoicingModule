@@ -59,7 +59,7 @@ class Invoice{
     FROM faktura f, faktura_towar ft, towar t
     WHERE f.id_faktura = ft.id_faktura
     AND t.id_towar = ft.id_towar
-    AND ";
+    AND f.id_faktura = 1";
 
     // prepare query statement
     $stmt = $this->connection->prepare($query);
