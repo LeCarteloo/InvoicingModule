@@ -64,7 +64,7 @@ class Invoice{
     FROM faktura f, nabywca n, status s
     WHERE n.id_nabywca = f.id_nabywca
     AND s.id_status = f.id_status
-    AND (n.NIP LIKE '$input'
+    AND (n.NIP LIKE '%".$input."%'
     OR  n.nazwa_nabywcy LIKE '$input'
     OR n.email_nabywcy LIKE '$input'
     OR f.numer_faktury LIKE '$input'

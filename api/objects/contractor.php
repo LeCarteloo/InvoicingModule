@@ -33,5 +33,18 @@ class Contractor{
     return $stmt;
   }
 
+  function getContractor($NIP){
+    // select all query
+    $query = "SELECT * FROM nabywca WHERE NIP = '$NIP'";
+
+    // prepare query statement
+    $stmt = $this->connection->prepare($query);
+
+    // execute query
+    $stmt->execute();
+
+    return $stmt;
+  }
+
 }
 ?>

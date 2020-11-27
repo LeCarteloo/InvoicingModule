@@ -32,6 +32,21 @@ function read(){
     return $stmt;
 }
 
+function searchInvoice($input){
+  // select all query
+  $query = "SELECT *
+  FROM towar
+  WHERE nazwa LIKE '$input')";
+
+  // prepare query statement
+  $stmt = $this->connection->prepare($query);
+
+  // execute query
+  $stmt->execute();
+
+  return $stmt;
+}
+
 }
 
 ?>
