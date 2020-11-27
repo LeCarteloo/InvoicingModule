@@ -11,11 +11,14 @@ include_once '../../config/database.php';
 
 // instantiate product object
 include_once '../objects/invoice.php';
+include_once '../objects/invoiceCargo.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
 $product = new Invoice($db);
+
+$invoiceCargo = new invoiceCargo($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -26,7 +29,9 @@ if(
     !empty($data->id_nabywca) &&
     !empty($data->id_status) &&
     !empty($data->data_wystawienia)&&
-    !empty($data->data_sprzedazy)
+    !empty($data->data_sprzedazy)&&
+    !empty($data->ilosc) &&
+    !empty($data->id_towar)
 ){
 
     // set product property values
@@ -34,7 +39,10 @@ if(
     $product->id_nabywca = $data->id_nabywca;
     $product->id_status = $data->id_status;
     $product->data_wystawienia = $data->data_wystawienia;
-   $product->data_sprzedazy = $data->data_sprzedazy;
+    $product->data_sprzedazy = $data->data_sprzedazy;
+    $invoiceCargo->ilosc = $data->ilosc;
+    $invoiceCargo->id_towar = $data->id_towar;
+
     // $product->created = date('Y-m-d H:i:s');
 
     // create the product

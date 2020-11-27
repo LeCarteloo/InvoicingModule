@@ -133,7 +133,6 @@ class Invoice{
                 " . $this->table_name . "
             SET
                 numer_faktury=:numer_faktury, id_nabywca=:id_nabywca, id_status=:id_status, data_wystawienia=:data_wystawienia, data_sprzedazy=:data_sprzedazy";
-
     // prepare query
     $stmt = $this->connection->prepare($query);
 
