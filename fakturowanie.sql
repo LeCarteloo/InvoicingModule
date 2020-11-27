@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 27 Lis 2020, 18:19
+-- Czas generowania: 27 Lis 2020, 22:41
 -- Wersja serwera: 10.4.16-MariaDB
 -- Wersja PHP: 7.4.12
 
@@ -41,7 +41,9 @@ CREATE TABLE `faktura` (
 --
 
 INSERT INTO `faktura` (`id_faktura`, `numer_faktury`, `id_nabywca`, `id_status`, `data_wystawienia`, `data_sprzedazy`) VALUES
-(1, '12461/2020', 1, 2, '2020-11-26', '2020-11-24');
+(1, '12461/2020', 1, 2, '2020-11-26', '2020-11-24'),
+(3, '00000/2020', 1, 3, '2020-11-19', '2020-11-20'),
+(4, '2020/3030', 1, 3, '2018-06-01', '2018-06-01');
 
 -- --------------------------------------------------------
 
@@ -61,7 +63,8 @@ CREATE TABLE `faktura_towar` (
 
 INSERT INTO `faktura_towar` (`id_faktura`, `id_towar`, `ilość`) VALUES
 (1, 1, 31),
-(1, 3, 999);
+(1, 3, 999),
+(3, 1, 24124214);
 
 -- --------------------------------------------------------
 
@@ -171,7 +174,7 @@ ALTER TABLE `towar`
 -- AUTO_INCREMENT dla tabeli `faktura`
 --
 ALTER TABLE `faktura`
-  MODIFY `id_faktura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_faktura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT dla tabeli `nabywca`
