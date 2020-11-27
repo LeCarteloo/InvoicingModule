@@ -32,11 +32,11 @@ function read(){
     return $stmt;
 }
 
-function searchInvoice($input){
+function searchCargo($input){
   // select all query
   $query = "SELECT *
   FROM towar
-  WHERE nazwa LIKE '$input')";
+  WHERE nazwa LIKE '%".$input."%')";
 
   // prepare query statement
   $stmt = $this->connection->prepare($query);
