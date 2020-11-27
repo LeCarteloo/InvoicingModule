@@ -135,7 +135,7 @@ class Invoice{
                 numer_faktury=:numer_faktury, id_nabywca=:id_nabywca, id_status=:id_status, data_wystawienia=:data_wystawienia, data_sprzedazy=:data_sprzedazy";
 
     // prepare query
-    $stmt = $this->conn->prepare($query);
+    $stmt = $this->connection->prepare($query);
 
     // sanitize
     $this->numer_faktury=htmlspecialchars(strip_tags($this->numer_faktury));
