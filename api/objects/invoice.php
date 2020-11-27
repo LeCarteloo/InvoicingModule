@@ -53,13 +53,13 @@ class Invoice{
     return $stmt;
   }
 
-  function readTEST(){
+  function readTEST($id){
     // select all query
     $query = "SELECT f.*,ft.*,t.*
     FROM faktura f, faktura_towar ft, towar t
     WHERE f.id_faktura = ft.id_faktura
     AND t.id_towar = ft.id_towar
-    AND f.id_faktura = 1";
+    AND f.id_faktura = ".$id;
 
     // prepare query statement
     $stmt = $this->connection->prepare($query);

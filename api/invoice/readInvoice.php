@@ -19,7 +19,6 @@ $invoice = new Invoice($db);
 
 // query products
 $stmt = $invoice->read();
-$stmt2 = $invoice->readTEST();
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
@@ -42,6 +41,8 @@ if($num>0){
         // this will make $row['name'] to
         // just $name only
         extract($row);
+
+        $stmt2 = $invoice->readTEST($id_faktura);
 
         while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
             extract($row2);
