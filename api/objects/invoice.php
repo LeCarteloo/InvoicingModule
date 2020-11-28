@@ -156,8 +156,30 @@ class Invoice{
     }
 
     return false;
-
 }
+
+  function update($id){
+
+        // query to insert record
+        $query = "UPDATE
+                    " . $this->table_name . "
+                SET
+                    id_status=:id_status
+                    WHERE id_faktura=".$id;
+        // prepare query
+        $stmt = $this->connection->prepare($query);
+
+        $this->id_status=htmlspecialchars(strip_tags($this->id_status));
+
+        $stmt->bindParam(":id_status", $this->id_status);
+
+        // execute query
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+  }
 
 }
 ?>
