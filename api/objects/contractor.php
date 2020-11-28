@@ -46,5 +46,37 @@ class Contractor{
     return $stmt;
   }
 
+  function create(){
+
+    // query to insert record
+    $query = "INSERT INTO
+                " . $this->table_name . "
+            SET
+                nazwa_nabywcy=:nazwa_nabywcy, adres=:adres, NIP=:NIP, email_nabywcy=:email_nabywcy";
+    // prepare query
+    $stmt = $this->connection->prepare($query);
+
+    // sanitize
+    $this->nazwa_nabywcy=htmlspecialchars(strip_tags($this->nazwa_nabywcy));
+    $this->adres=htmlspecialchars(strip_tags($this->adres));
+    $this->NIP=htmlspecialchars(strip_tags($this->NIP));
+    $this->email_nabywcy=htmlspecialchars(strip_tags($this->email_nabywcy));
+
+    // bind values
+    $stmt->bindParam(":nazwa_nabywcy", $this->nazwa_nabywcy);
+    $stmt->bindParam(":adres", $this->adres);
+    $stmt->bindParam(":NIP", $this->NIP);
+    $stmt->bindParam(":email_nabywcy", $this->email_nabywcy);
+
+    // execute query
+    if($stmt->execute()){
+        return true;
+    }
+
+    return false;
+
+}
+
+
 }
 ?>

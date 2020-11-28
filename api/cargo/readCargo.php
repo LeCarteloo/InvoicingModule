@@ -17,8 +17,12 @@ $db = $database->getConnection();
 // initialize object
 $cargo = new Cargo($db);
 
-// query products
-$stmt = $cargo->read();
+if(isset($_GET['input'])){
+  $stmt = $cargo->searchCargo($_GET['input']);
+}
+else{
+  $stmt = $cargo->read();
+}
 $num = $stmt->rowCount();
 
 // check if more than 0 record found

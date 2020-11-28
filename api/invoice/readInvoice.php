@@ -17,28 +17,28 @@ $db = $database->getConnection();
 // initialize object
 $invoice = new Invoice($db);
 
-// query products
-$stmt = $invoice->read();
-$num = $stmt->rowCount();
+//from input field
 
 // check if more than 0 record found
+if(isset($_GET['input'])){
+  $input = $_GET['input'];
+  if(isset($_GET['sort']) && isset($_GET['type']))
+    $stmt = $invoice->sortInvoice($input,$_GET['sort'],$_GET['type']);
+  else
+    $stmt = $invoice->searchInvoice($input);
+
+  $num = $stmt->rowCount();
+
+
 if($num>0){
 
-    // products array
     $products_arr=array();
     $products_arr["Faktury"]=array();
 
-
-    // retrieve our table contents
-    // fetch() is faster than fetchAll()
-    // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-    $TEST;
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
       $products_TEST=array();
       $products_TEST["Towary"]=array();
-        // extract row
-        // this will make $row['name'] to
-        // just $name only
+
         extract($row);
 
         $stmt2 = $invoice->readTEST($id_faktura);
@@ -69,8 +69,6 @@ if($num>0){
             "produkt" => $products_TEST
         );
 
-
-
         array_push($products_arr["Faktury"], $product_item);
     }
     // set response code - 200 OK
@@ -79,8 +77,8 @@ if($num>0){
     // show products data in json format
     echo json_encode($products_arr["Faktury"]);
 
-}
-else{
+  }
+    else{
 
     // set response code - 404 Not found
     http_response_code(404);
@@ -89,6 +87,12 @@ else{
     echo json_encode(
         array("message" => "No contractors found.")
     );
+  }
+  }
+else{
+  echo json_encode(
+      array("message" => "safsafasfas.")
+  );
 }
 
 ?>
