@@ -35,23 +35,17 @@ function createInvoiceCargo(){
   $query = "INSERT INTO
               " . $this->table_name . "
           SET
-              id_towar=:id_towar, ilosc=:ilosc, id_faktura=:id_status";
+              id_towar=:id_towar, ilość=:ilosc, id_faktura=LAST_INSERT_ID()";
   // prepare query
   $stmt = $this->connection->prepare($query);
 
   // sanitize
-  $this->numer_faktury=htmlspecialchars(strip_tags($this->numer_faktury));
-  $this->id_nabywca=htmlspecialchars(strip_tags($this->id_nabywca));
-  $this->id_status=htmlspecialchars(strip_tags($this->id_status));
-  $this->data_wystawienia=htmlspecialchars(strip_tags($this->data_wystawienia));
-  $this->data_sprzedazy=htmlspecialchars(strip_tags($this->data_sprzedazy));
+  $this->id_towar=htmlspecialchars(strip_tags($this->id_towar));
+  $this->ilosc=htmlspecialchars(strip_tags($this->ilosc));
 
   // bind values
-  $stmt->bindParam(":numer_faktury", $this->numer_faktury);
-  $stmt->bindParam(":id_nabywca", $this->id_nabywca);
-  $stmt->bindParam(":id_status", $this->id_status);
-  $stmt->bindParam(":data_wystawienia", $this->data_wystawienia);
-  $stmt->bindParam(":data_sprzedazy", $this->data_sprzedazy);
+  $stmt->bindParam(":id_towar", $this->id_towar);
+  $stmt->bindParam(":ilosc", $this->ilosc);
 
   // execute query
   if($stmt->execute()){
