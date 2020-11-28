@@ -30,8 +30,7 @@ if(
     !empty($data->id_status) &&
     !empty($data->data_wystawienia)&&
     !empty($data->data_sprzedazy)&&
-    !empty($data->ilosc) &&
-    !empty($data->id_towar)
+    !empty($data->towary)
 ){
 
     // set product property values
@@ -40,8 +39,6 @@ if(
     $product->id_status = $data->id_status;
     $product->data_wystawienia = $data->data_wystawienia;
     $product->data_sprzedazy = $data->data_sprzedazy;
-    $invoiceCargo->ilosc = $data->ilosc;
-    $invoiceCargo->id_towar = $data->id_towar;
 
     // $product->created = date('Y-m-d H:i:s');
 
@@ -65,25 +62,32 @@ if(
         echo json_encode(array("message" => "Unable to create product."));
     }
 
-    // create the product
-    if($invoiceCargo->createInvoiceCargo()){
+    foreach($data->towary as $towar) {
 
-        // set response code - 201 created
-        http_response_code(201);
+        $invoiceCargo->ilosc = $towar->ilosc;
+        $invoiceCargo->id_towar = $towar->id_towar;
 
-        // tell the user
-        echo json_encode(array("message" => "Product was created.1"));
+        // create the product
+        if($invoiceCargo->createInvoiceCargo()){
+
+            // set response code - 201 created
+            http_response_code(201);
+
+            // tell the user
+            echo json_encode(array("message" => "Product was created.1"));
+        }
+
+        // if unable to create the product, tell the user
+        else{
+
+            // set response code - 503 service unavailable
+            http_response_code(503);
+
+            // tell the user
+            echo json_encode(array("message" => "Unable to create product.1"));
+        }
     }
 
-    // if unable to create the product, tell the user
-    else{
-
-        // set response code - 503 service unavailable
-        http_response_code(503);
-
-        // tell the user
-        echo json_encode(array("message" => "Unable to create product.1"));
-    }
 }
 
 // tell the user data is incomplete
