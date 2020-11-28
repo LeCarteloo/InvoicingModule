@@ -17,12 +17,11 @@ $db = $database->getConnection();
 // initialize object
 $cargo = new Cargo($db);
 
-if(isset($_GET['input'])){
+if(isset($_GET['input']))
   $stmt = $cargo->searchCargo($_GET['input']);
-}
-else{
+else
   $stmt = $cargo->read();
-}
+
 $num = $stmt->rowCount();
 
 // check if more than 0 record found
