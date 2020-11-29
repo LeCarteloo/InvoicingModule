@@ -1,67 +1,69 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// get database connection
+// dodanie polaczenia z database.php i dodanie obiektu contractor.php
 include_once '../../config/database.php';
-
-// instantiate product object
 include_once '../objects/contractor.php';
 
 $database = new Database();
-$db = $database->getConnection();
+$db       = $database->getConnection();
 
+// zainicjalizowanie obiektu contractor
 $contractor = new Contractor($db);
 
-// get posted data
+// uzyskaj dane z pliku JSON
 $data = json_decode(file_get_contents("php://input"));
 
-// make sure data is not empty
-if(
-    !empty($data->nazwa_nabywcy) &&
+// sprawdzanie czy dane nie sa puste
+if (!empty($data->nazwa_nabywcy) &&
     !empty($data->adres) &&
-    !empty($data->NIP)
-){
+    !empty($data->NIP)) {
 
-    // set product property values
+    // ustawienie wartosci kontrahenta
     $contractor->nazwa_nabywcy = $data->nazwa_nabywcy;
-    $contractor->adres = $data->adres;
-    $contractor->NIP = $data->NIP;
+    $contractor->adres         = $data->adres;
+    $contractor->NIP           = $data->NIP;
     $contractor->email_nabywcy = $data->email_nabywcy;
 
-    // create the product
-    if($contractor->create()){
+    // utworz kontrahenta
+    if ($contractor->create()) {
 
-        // set response code - 201 created
+        // ustawienie kodu odpowiedzi na - 201 created
         http_response_code(201);
 
-        // tell the user
-        echo json_encode(array("message" => "Product was created."));
+        // wyswietlenie wiadomosci ze udalo sie stworzyc kontrahenta
+        echo json_encode(array(
+            "Sukces" => "Kontrahent został utworzony."
+        ));
     }
 
-    // if unable to create the product, tell the user
-    else{
+    // jezeli nie udalo sie stworzyc
+    else {
 
-        // set response code - 503 service unavailable
+        // ustawienie kodu odpowiedzi n - 503 service unavailable
         http_response_code(503);
 
-        // tell the user
-        echo json_encode(array("message" => "Unable to create product."));
+        // wyswietlenie wiadomosci ze nie udalo sie stworzyć kontrahenta
+        echo json_encode(array(
+            "Błąd" => "Nie udało się stworzyć kontrahenta."
+        ));
     }
 
 
 }
-// tell the user data is incomplete
-else{
+// jezeli dane sa puste
+else {
 
-    // set response code - 400 bad request
+    // ustawienie kodu odpowiedzi na - 400 bad request
     http_response_code(400);
 
-    // tell the user
-    echo json_encode(array("message" => "Unable to create product. Data is incomplete."));
+    // wyswietlenie wiadomosci ze dane sa nie kompletne
+    echo json_encode(array(
+        "Błąd" => "Nie udalo sie stworzyc kontrahenta, dane sa nie kompletne."
+    ));
 }
 ?>

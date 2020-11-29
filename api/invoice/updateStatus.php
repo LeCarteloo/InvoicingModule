@@ -1,49 +1,52 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// include database and object files
+// dodanie polaczenia z database.php i dodanie obiektu invoice.php
 include_once '../../config/database.php';
 include_once '../objects/invoice.php';
 
-// get database connection
+// uzyskanie polaczenie z baza danych
 $database = new Database();
-$db = $database->getConnection();
+$db       = $database->getConnection();
 
-// prepare product object
+// zainicjalizowanie obiektu invoice
 $invoice = new Invoice($db);
 
-// get id of product to be edited
+// uzyskanie ID faktury ktora ma zostac edytowana
 $data = json_decode(file_get_contents("php://input"));
 
-// set ID property of product to be edited
+// ustawienie ID faktury ktora ma byc edytowana
 $invoice->id_faktura = $data->id_faktura;
 
-// set product property values
+// ustawienie ID statusu
 $invoice->id_status = $data->id_status;
 
 
-// update the product
-if($invoice->update($invoice->id_faktura)){
+// zaktualizowanie faktury
+if ($invoice->update($invoice->id_faktura)) {
 
-    // set response code - 200 ok
+    // ustawienie kodu odpowiedzi na - 200 OK
     http_response_code(200);
 
-    // tell the user
-    echo json_encode(array("message" => "Product was updated."));
+    // wyswietlenie wiadomosci ze udalo sie zaktualizowac statusu
+    echo json_encode(array(
+        "Sukces" => "Status został zaktualizowany."
+    ));
 }
 
-// if unable to update the product, tell the user
-else{
+// jezeli nie udalo sie zaktualizowac
+else {
 
-    // set response code - 503 service unavailable
+    // ustawienie kodu odpowiedzi na - 503 service unavailable
     http_response_code(503);
 
-    // tell the user
-    echo json_encode(array("message" => "Unable to update product."));
+    // wyswietlenie wiadomosci ze nie udalo sie zaktualizowac statusu
+    echo json_encode(array(
+        "Błąd" => "Nie udalo sie zaktualizowac statusu."
+    ));
 }
 ?>

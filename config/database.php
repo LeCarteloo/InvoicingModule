@@ -12,7 +12,7 @@ public $connection;
       $this->connection = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->database_name, $this->username, $this->password);
             $this->connection->exec("set names utf8");
         }catch(PDOException $exception){
-            echo "Connection error: " . $exception->getMessage();
+            echo "Błąd łączenia: " . $exception->getMessage();
         }
         return $this->connection;
   }

@@ -1,102 +1,108 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// get database connection
+// dodanie polaczenia z database.php
 include_once '../../config/database.php';
 
-// instantiate product object
+// dodanie obiektow invoice.php i invoiceCargo.php
 include_once '../objects/invoice.php';
 include_once '../objects/invoiceCargo.php';
 
 $database = new Database();
-$db = $database->getConnection();
+$db       = $database->getConnection();
 
-$product = new Invoice($db);
-
+// zainicjalizowanie obiektu invoice i invoiceCargo
+$invoice      = new Invoice($db);
 $invoiceCargo = new invoiceCargo($db);
 
-// get posted data
+// uzyskaj dane z pliku JSON
 $data = json_decode(file_get_contents("php://input"));
 
-// make sure data is not empty
-if(
-    !empty($data->numer_faktury) &&
+// sprawdzanie czy dane nie sa puste
+if (!empty($data->numer_faktury) &&
     !empty($data->id_nabywca) &&
     !empty($data->id_status) &&
-    !empty($data->data_wystawienia)&&
-    !empty($data->data_sprzedazy)&&
-    !empty($data->towary)
-){
+    !empty($data->data_wystawienia) &&
+    !empty($data->data_sprzedazy) &&
+    !empty($data->towary)) {
 
-    // set product property values
-    $product->numer_faktury = $data->numer_faktury;
-    $product->id_nabywca = $data->id_nabywca;
-    $product->id_status = $data->id_status;
-    $product->data_wystawienia = $data->data_wystawienia;
-    $product->data_sprzedazy = $data->data_sprzedazy;
+    // ustawienie wartosci faktury
+    $invoice->numer_faktury    = $data->numer_faktury;
+    $invoice->id_nabywca       = $data->id_nabywca;
+    $invoice->id_status        = $data->id_status;
+    $invoice->data_wystawienia = $data->data_wystawienia;
+    $invoice->data_sprzedazy   = $data->data_sprzedazy;
 
-    // $product->created = date('Y-m-d H:i:s');
+    // utworz fakture
+    if ($invoice->create()) {
 
-    // create the product
-    if($product->create()){
-
-        // set response code - 201 created
+        // ustawienie kodu odpowiedzi na - 201 created
         http_response_code(201);
 
-        // tell the user
-        echo json_encode(array("message" => "Product was created."));
+        // wyswietlenie wiadomosci ze udalo sie stworzyc fakture
+        echo json_encode(array(
+            "Sukces" => "Faktura została utworzona."
+        ));
     }
 
-    // if unable to create the product, tell the user
-    else{
+    // jezeli nie udalo sie stworzyc
+    else {
 
-        // set response code - 503 service unavailable
+        // ustawienie kodu odpowiedzi na - 503 service unavailable
         http_response_code(503);
 
-        // tell the user
-        echo json_encode(array("message" => "Unable to create product."));
+        // wyswietlenie wiadomosci ze nie udalo sie stworzyć faktury
+        echo json_encode(array(
+            "Błąd" => "Nie udało się stworzyć faktury."
+        ));
     }
 
-    foreach($data->towary as $towar) {
+    // dodawanie towarow do faktury
+    foreach ($data->towary as $towar) {
 
-        $invoiceCargo->ilosc = $towar->ilosc;
+        $invoiceCargo->ilosc    = $towar->ilosc;
         $invoiceCargo->id_towar = $towar->id_towar;
 
-        // create the product
-        if($invoiceCargo->createInvoiceCargo()){
+        // dodaj towar
+        if ($invoiceCargo->createInvoiceCargo()) {
 
-            // set response code - 201 created
+            // ustawienie kodu odpowiedzi na - 201 created
             http_response_code(201);
 
-            // tell the user
-            echo json_encode(array("message" => "Product was created.1"));
+            // wyswietlenie wiadomosci ze udalo sie dodac towar
+            echo json_encode(array(
+                "Sukces" => "Towar został dodany do faktury."
+            ));
         }
 
-        // if unable to create the product, tell the user
-        else{
+        // jezeli nie udalo sie dodac towaru
+        else {
 
-            // set response code - 503 service unavailable
+            // ustawienie kodu odpowiedzi na - 503 service unavailable
             http_response_code(503);
 
-            // tell the user
-            echo json_encode(array("message" => "Unable to create product.1"));
+            // wyswietlenie wiadomosci ze nie udalo sie dodac towaru
+            echo json_encode(array(
+                "Błąd" => "Nie udało się dodac towaru."
+            ));
         }
     }
 
 }
 
-// tell the user data is incomplete
-else{
+// jezeli dane sa puste
+else {
 
-    // set response code - 400 bad request
+    // ustawienie kodu odpowiedzi na - 400 bad request
     http_response_code(400);
 
-    // tell the user
-    echo json_encode(array("message" => "Unable to create product. Data is incomplete."));
+    // wyswietlenie wiadomosci ze dane sa nie kompletne
+    echo json_encode(array(
+        "Błąd" => "Nie udalo sie stworzyc faktury, dane sa nie kompletne."
+    ));
 }
 ?>

@@ -1,46 +1,37 @@
 <?php
-
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-// database connection
-// include database and object files
-
+// dodanie polaczenia z database.php i dodanie obiektu cargo.php
 include_once 'D:\Xampp\htdocs\Project\config\database.php';
 include_once '../objects/cargo.php';
 
-// instantiate database and product object
+// uzyskanie polaczenie z baza danych
 $database = new Database();
-$db = $database->getConnection();
+$db       = $database->getConnection();
 
-// initialize object
+// zainicjalizowanie obiektu cargo
 $cargo = new Cargo($db);
 
-if(isset($_GET['input']))
-  $stmt = $cargo->searchCargo($_GET['input']);
+// sprawdzenie czy input jest ustawiony
+if (isset($_GET['input']))
+    $stmtCargo = $cargo->searchCargo($_GET['input']);// jezeli input jest ustawiony to wyszukujemy po nazwie
 else
-  $stmt = $cargo->read();
+    $stmtCargo = $cargo->read(); //jesli nie to wyswietlamy wszystko
 
-$num = $stmt->rowCount();
+$num = $stmtCargo->rowCount();
 
-// check if more than 0 record found
-if($num>0){
+// sprawdzanie czy znaleziono wiecej niz 0 rekordow
+if ($num > 0) {
 
-    // products array
-    $products_arr=array();
-    $products_arr["Towary"]=array();
+    $cargoArray           = array();
+    $cargoArray["Towary"] = array();
 
-    // retrieve our table contents
-    // fetch() is faster than fetchAll()
-    // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        // extract row
-        // this will make $row['name'] to
-        // just $name only
+    while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
+
         extract($row);
 
-        $product_item=array(
+        $cargoItem = array(
             "id_towar" => $id_towar,
             "nazwa" => $nazwa,
             "cena" => $cena,
@@ -48,24 +39,23 @@ if($num>0){
             "stawka_vat" => $stawka_vat
         );
 
-        array_push($products_arr["Towary"], $product_item);
+        array_push($cargoArray["Towary"], $cargoItem);
     }
 
-    // set response code - 200 OK
+    // ustawienie kodu odpowiedzi na - 200 OK
     http_response_code(200);
 
-    // show products data in json format
-    echo json_encode($products_arr);
-}
-else{
+    // pokazanie towarow w formacie JSON
+    echo json_encode($cargoArray);
+} else {
 
-    // set response code - 404 Not found
+    // ustawienie kodu odpowiedzi na - 404 Not found
     http_response_code(404);
 
-    // tell the user no products found
-    echo json_encode(
-        array("message" => "No products found.")
-    );
+    // wyswietlenie wiadomosci ze nie znaleziono towarow
+    echo json_encode(array(
+        "Błąd" => "Nie znaleziono towarów."
+    ));
 }
 
 ?>

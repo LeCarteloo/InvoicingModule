@@ -1,68 +1,70 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// get database connection
+// dodanie polaczenia z database.php i dodanie obiektu cargo.php
 include_once '../../config/database.php';
-
-// instantiate product object
 include_once '../objects/cargo.php';
 
 $database = new Database();
-$db = $database->getConnection();
+$db       = $database->getConnection();
 
+// zainicjalizowanie obiektu cargo
 $cargo = new Cargo($db);
 
-// get posted data
+// uzyskaj dane z pliku JSON
 $data = json_decode(file_get_contents("php://input"));
 
-// make sure data is not empty
-if(
-    !empty($data->nazwa) &&
+// sprawdzanie czy dane nie sa puste
+if (!empty($data->nazwa) &&
     !empty($data->cena) &&
     !empty($data->jednostka_miary) &&
-    !empty($data->stawka_vat)
-){
+    !empty($data->stawka_vat)) {
 
-    // set product property values
-    $cargo->nazwa = $data->nazwa;
-    $cargo->cena = $data->cena;
+    // ustawienie wartosci towaru
+    $cargo->nazwa           = $data->nazwa;
+    $cargo->cena            = $data->cena;
     $cargo->jednostka_miary = $data->jednostka_miary;
-    $cargo->stawka_vat = $data->stawka_vat;
+    $cargo->stawka_vat      = $data->stawka_vat;
 
-    // create the product
-    if($cargo->create()){
+    // utworz towar
+    if ($cargo->create()) {
 
-        // set response code - 201 created
+        // ustawienie kodu odpowiedzi na - 201 created
         http_response_code(201);
 
-        // tell the user
-        echo json_encode(array("message" => "Product was created."));
+        // wyswietlenie wiadomosci ze udalo sie stworzyc towar
+        echo json_encode(array(
+            "Sukces" => "Towar został utworzony."
+        ));
     }
 
-    // if unable to create the product, tell the user
-    else{
+    // jezeli nie udalo sie stworzyc
+    else {
 
-        // set response code - 503 service unavailable
+        // ustawienie kodu odpowiedzi n - 503 service unavailable
         http_response_code(503);
 
-        // tell the user
-        echo json_encode(array("message" => "Unable to create product."));
+        // wyswietlenie wiadomosci ze nie udalo sie stworzyć towaru
+        echo json_encode(array(
+            "Błąd" => "Nie udało się stworzyć towaru."
+        ));
     }
 
 
 }
-// tell the user data is incomplete
-else{
+// jezeli dane sa puste
+else {
 
-    // set response code - 400 bad request
+    // ustawienie kodu odpowiedzi na - 400 bad request
     http_response_code(400);
 
-    // tell the user
-    echo json_encode(array("message" => "Unable to create product. Data is incomplete."));
+    // wyswietlenie wiadomosci ze dane sa nie kompletne
+    echo json_encode(array(
+        "Błąd" => "Nie udalo sie stworzyc towaru, dane sa nie kompletne."
+    ));
 }
 ?>

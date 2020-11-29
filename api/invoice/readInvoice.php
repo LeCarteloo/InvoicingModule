@@ -1,98 +1,90 @@
 <?php
-
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-// database connection
-// include database and object files
-
+// dodanie polaczenia z database.php i dodanie obiektu invoice.php
 include_once '../../config/database.php';
 include_once '../objects/invoice.php';
 
-// instantiate database and product object
+// uzyskanie polaczenie z baza danych
 $database = new Database();
-$db = $database->getConnection();
+$db       = $database->getConnection();
 
-// initialize object
+// zainicjalizowanie obiektu invoice
 $invoice = new Invoice($db);
 
-//from input field
+// sprawdzenie czy input jest ustawiony
+if (isset($_GET['input'])) {
+  // sprawdzenie czy jest ustawiona nazwa kolumny i typ sortowania
+    if (isset($_GET['column']) && isset($_GET['type']))
+        $stmtInvoice = $invoice->sortInvoice($_GET['input'], $_GET['column'], $_GET['type']); // jezeli typ i kolumna jest ustawiona to wywolujemy funkcje sort
+    else
+        $stmtInvoice = $invoice->searchInvoice($_GET['input']); // jezeli nie to wyszukujemy po wprowadzonym slowie
 
-// check if more than 0 record found
-if(isset($_GET['input'])){
-  $input = $_GET['input'];
-  if(isset($_GET['sort']) && isset($_GET['type']))
-    $stmt = $invoice->sortInvoice($input,$_GET['sort'],$_GET['type']);
-  else
-    $stmt = $invoice->searchInvoice($input);
+    $num = $stmtInvoice->rowCount();
 
-  $num = $stmt->rowCount();
+    // sprawdzanie czy znaleziono wiecej niz 0 rekordow
+    if ($num > 0) {
 
+        $invoiceArray            = array();
+        $invoiceArray["Faktury"] = array();
 
-if($num>0){
+        while ($row = $stmtInvoice->fetch(PDO::FETCH_ASSOC)) {
+            $cargoArray           = array();
+            $cargoArray["Towary"] = array();
 
-    $products_arr=array();
-    $products_arr["Faktury"]=array();
+            extract($row);
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-      $products_TEST=array();
-      $products_TEST["Towary"]=array();
+            $stmtCargo = $invoice->readCargo($id_faktura);
 
-        extract($row);
+            while ($row2 = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
+                extract($row2);
 
-        $stmt2 = $invoice->readTEST($id_faktura);
+                $cargoItem = array(
+                    "nazwa" => $nazwa,
+                    "cena" => $cena,
+                    "jednostka_miary" => $jednostka_miary,
+                    "stawka_vat" => $stawka_vat,
+                    "ilosc" => $ilość
+                );
 
-        while ($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)){
-            extract($row2);
+                array_push($cargoArray["Towary"], $cargoItem);
+            }
 
-            $products_item2 = array(
-              "nazwa" => $nazwa,
-              "cena" => $cena,
-              "jednostka_miary" => $jednostka_miary,
-              "stawka_vat" => $stawka_vat,
-              "ilosc" => $ilość
+            $invoiceItem = array(
+                "numer_faktury" => $numer_faktury,
+                "data_wystawienia" => $data_wystawienia,
+                "data_sprzedazy" => $data_sprzedazy,
+                "nazwa_nabywcy" => $nazwa_nabywcy,
+                "adres" => $adres,
+                "NIP" => $NIP,
+                "email_nabywcy" => $email_nabywcy,
+                "status_faktury" => $status_faktury,
+                "produkt" => $cargoArray
             );
 
-            array_push($products_TEST["Towary"], $products_item2);
+            array_push($invoiceArray["Faktury"], $invoiceItem);
         }
+        // ustawienie kodu odpowiedzi na - 200 OK
+        http_response_code(200);
 
-        $product_item=array(
-            "numer_faktury" => $numer_faktury,
-            "data_wystawienia" => $data_wystawienia,
-            "data_sprzedazy" => $data_sprzedazy,
-            "nazwa_nabywcy" => $nazwa_nabywcy,
-            "adres" => $adres,
-            "NIP" => $NIP,
-            "email_nabywcy" => $email_nabywcy,
-            "status_faktury" => $status_faktury,
-            "produkt" => $products_TEST
-        );
+        // pokazanie faktury w formacie JSON
+        echo json_encode($invoiceArray["Faktury"]);
 
-        array_push($products_arr["Faktury"], $product_item);
+    } else {
+
+        // ustawienie kodu odpowiedzi na - 404 Not found
+        http_response_code(404);
+
+        // wyswietlenie wiadomosci ze nie znaleziono faktury
+        echo json_encode(array(
+            "Błąd" => "Nie znaleziono faktur."
+        ));
     }
-    // set response code - 200 OK
-    http_response_code(200);
-
-    // show products data in json format
-    echo json_encode($products_arr["Faktury"]);
-
-  }
-    else{
-
-    // set response code - 404 Not found
-    http_response_code(404);
-
-    // tell the user no products found
-    echo json_encode(
-        array("message" => "No contractors found.")
-    );
-  }
-  }
-else{
-  echo json_encode(
-      array("message" => "safsafasfas.")
-  );
+} else {
+    echo json_encode(array(
+        "Błąd" => "Nie wprowadzono nic w inputa."
+    ));
 }
 
 ?>

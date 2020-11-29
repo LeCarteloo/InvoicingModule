@@ -1,34 +1,36 @@
-<<?php
-class Status{
+<?php
+class Status
+{
 
-  // database connection and table name from db
-  private $connection;
-  private $table_name="status";
+    // polaczenie z baza i nazwa tabeli w bazie
+    private $connection;
+    private $table_name = "status";
 
-  // properties of objects
-  public $id_status;
-  public $status_faktury;
+    // status
+    public $id_status;
+    public $status_faktury;
 
 
 
-  // constructor with $db as database connection
-  public function __construct($db){
-    $this->connection = $db;
-  }
+    // konstruktor z polaczeniem
+    public function __construct($db)
+    {
+        $this->connection = $db;
+    }
 
-  // read products
-function read(){
-    // select all query
-    $query = "SELECT * FROM "  . $this->table_name;
+    function read()
+    {
+        // zapytanie wyswietlajace wszystkie statusy
+        $query = "SELECT * FROM " . $this->table_name;
 
-    // prepare query statement
-    $stmt = $this->connection->prepare($query);
+        // przygotowanie zapytania
+        $stmt = $this->connection->prepare($query);
 
-    // execute query
-    $stmt->execute();
+        // wykonanie zapytania
+        $stmt->execute();
 
-    return $stmt;
-}
+        return $stmt;
+    }
 
 }
 
