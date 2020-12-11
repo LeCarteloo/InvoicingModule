@@ -81,5 +81,25 @@ class Contractor
 
     }
 
+    function isValidNIP($NIP){
+
+      if(!is_numeric($NIP)){
+        return false;
+      }
+
+      if(strlen($NIP)==10){
+      $weightArray = array(0 => 6, 5, 7, 2, 3, 4, 5, 6, 7);
+      $sum = 0;
+      $controlNumber = intval(substr($NIP,-1));
+      for($i = 0 ; $i< 9;$i++){
+        $sum += (intval($NIP{$i})) * $weightArray[$i];
+      }
+
+      return $sum % 11 === $controlNumber;
+      }
+    }
+
+
+
 }
 ?>

@@ -18,17 +18,21 @@ $contractor = new Contractor($db);
 // uzyskaj dane z pliku JSON
 $data = json_decode(file_get_contents("php://input"));
 
+$check = array("/",","," ",".","*","-","_");
+
+$NIP = str_replace($check,'',$data->NIP);
+
 // sprawdzanie czy dane nie sa puste
 if (!empty($data->nazwa_nabywcy) &&
     !empty($data->adres) &&
-    !empty($data->NIP)) {
+    !empty($data->NIP) &&
+    $contractor->isValidNIP($NIP)) {
 
     // ustawienie wartosci kontrahenta
     $contractor->nazwa_nabywcy = $data->nazwa_nabywcy;
     $contractor->adres         = $data->adres;
-    $contractor->NIP           = $data->NIP;
+    $contractor->NIP           = $NIP;
     $contractor->email_nabywcy = $data->email_nabywcy;
-
     // utworz kontrahenta
     if ($contractor->create()) {
 
@@ -57,13 +61,12 @@ if (!empty($data->nazwa_nabywcy) &&
 }
 // jezeli dane sa puste
 else {
-
     // ustawienie kodu odpowiedzi na - 400 bad request
     http_response_code(400);
 
     // wyswietlenie wiadomosci ze dane sa nie kompletne
     echo json_encode(array(
-        "Błąd" => "Nie udalo sie stworzyc kontrahenta, dane sa nie kompletne."
+        "Błąd" => "Nie udalo sie stworzyc kontrahenta, dane sa nie kompletne lub mają niepoprawny format."
     ));
 }
 ?>

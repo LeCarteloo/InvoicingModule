@@ -125,7 +125,6 @@ class Invoice
         $this->id_status        = htmlspecialchars(strip_tags($this->id_status));
         $this->data_wystawienia = htmlspecialchars(strip_tags($this->data_wystawienia));
         $this->data_sprzedazy   = htmlspecialchars(strip_tags($this->data_sprzedazy));
-
         // podłączenie wartości do zapytania
         $stmt->bindParam(":numer_faktury", $this->numer_faktury);
         $stmt->bindParam(":id_nabywca", $this->id_nabywca);
@@ -152,7 +151,6 @@ class Invoice
 
         // przygotowanie zapytania
         $stmt = $this->connection->prepare($query);
-
         // zabezpieczenie
         $this->id_status = htmlspecialchars(strip_tags($this->id_status));
 

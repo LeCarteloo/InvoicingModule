@@ -21,8 +21,11 @@ $data = json_decode(file_get_contents("php://input"));
 // sprawdzanie czy dane nie sa puste
 if (!empty($data->nazwa) &&
     !empty($data->cena) &&
+    is_numeric($data->cena) &&
+    preg_match("/^[a-zA-Z]+$/", $data->jednostka_miary) &&
     !empty($data->jednostka_miary) &&
-    !empty($data->stawka_vat)) {
+    !empty($data->stawka_vat) &&
+    is_numeric($data->stawka_vat)) {
 
     // ustawienie wartosci towaru
     $cargo->nazwa           = $data->nazwa;
@@ -64,7 +67,7 @@ else {
 
     // wyswietlenie wiadomosci ze dane sa nie kompletne
     echo json_encode(array(
-        "Błąd" => "Nie udalo sie stworzyc towaru, dane sa nie kompletne."
+        "Błąd" => "Nie udalo sie stworzyc towaru, dane sa nie kompletne lub mają nie poprawny format."
     ));
 }
 ?>
