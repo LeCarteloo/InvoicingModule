@@ -165,5 +165,21 @@ class Invoice
         return false;
     }
 
+    function graphStatus(){
+      // Zapytanie wyswietlajace wszystkie towary w zaleznosci od ID faktury
+      $query = "SELECT s.status_faktury,
+      COUNT(s.status_faktury) as ilosc
+      FROM faktura f, status s
+      WHERE f.id_status = s.id_status
+      GROUP BY s.status_faktury";
+
+      // przygotowanie zapytania
+      $stmt = $this->connection->prepare($query);
+
+      // wykonanie zapytania
+      $stmt->execute();
+
+      return $stmt;
+    }
 }
 ?>
