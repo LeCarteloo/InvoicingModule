@@ -28,11 +28,16 @@ if (!empty($data->nazwa_nabywcy) &&
     !empty($data->NIP) &&
     $contractor->isValidNIP($NIP)) {
 
+    if(!empty($data->email_nabywcy) && !filter_var($data->email_nabywcy,FILTER_VALIDATE_EMAIL)){
+      goto test;
+    }
+    else{
+      $contractor->email_nabywcy = $data->email_nabywcy;
+    }
     // ustawienie wartosci kontrahenta
     $contractor->nazwa_nabywcy = $data->nazwa_nabywcy;
     $contractor->adres         = $data->adres;
     $contractor->NIP           = $NIP;
-    $contractor->email_nabywcy = $data->email_nabywcy;
     // utworz kontrahenta
     if ($contractor->create()) {
 
@@ -61,6 +66,7 @@ if (!empty($data->nazwa_nabywcy) &&
 }
 // jezeli dane sa puste
 else {
+  test:
     // ustawienie kodu odpowiedzi na - 400 bad request
     http_response_code(400);
 
