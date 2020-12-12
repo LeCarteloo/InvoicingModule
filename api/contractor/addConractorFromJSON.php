@@ -29,7 +29,7 @@ if (!empty($data->nazwa_nabywcy) &&
     $contractor->isValidNIP($NIP)) {
 
     if(!empty($data->email_nabywcy) && !filter_var($data->email_nabywcy,FILTER_VALIDATE_EMAIL)){
-      goto test;
+      goto error;
     }
     else{
       $contractor->email_nabywcy = $data->email_nabywcy;
@@ -66,7 +66,7 @@ if (!empty($data->nazwa_nabywcy) &&
 }
 // jezeli dane sa puste
 else {
-  test:
+  error:
     // ustawienie kodu odpowiedzi na - 400 bad request
     http_response_code(400);
 

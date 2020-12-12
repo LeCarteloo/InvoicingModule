@@ -10,10 +10,17 @@ include_once '../../api/objects/invoice.php';
 
  $invoice = new Invoice($db);
 
- //$db = mysqli_connect("localhost","root","","fakturowanie");
- $stmtGraphCargo = $invoice->
+ $rok = 2020;
+ $stmtGraphStatus = $invoice->graphStatus();
+ $stmtGraphMonth = $invoice->graphMonth($rok);
 
- $results = mysqli_query($db,$stmtGraphCargo);
+ $invoiceGraphStatus = array();
+ $numStatus = $stmtGraphStatus->rowCount();
+ $invoiceGraphStatus = $stmtGraphStatus->fetchAll (PDO::FETCH_ASSOC);
+
+ $invoiceGraphMonth = array();
+ $numMonth = $stmtGraphMonth->rowCount();
+ $invoiceGraphMonth = $stmtGraphMonth->fetchAll (PDO::FETCH_ASSOC);
 
 ?>
 
@@ -30,22 +37,41 @@ include_once '../../api/objects/invoice.php';
       var data = google.visualization.arrayToDataTable([
         ['status_faktury',"ilosc"],
         <?php
-        while($row = mysqli_fetch_array($results)){
-          echo "['".$row["status_faktury"]."',".$row["ilosc"]."],";
+        foreach ($invoiceGraphStatus as $key => $value) {
+          echo "['".$value["status_faktury"]."',".$value["ilosc"]."],";
         }
         ?>
       ]);
         var options = {
-          title: "Faktury wg statusÓW"
+          title: "Faktury według statusów"
         };
-        var chart = new google.visualization.PieChart(document.getElementById('test'));
+        var chart = new google.visualization.PieChart(document.getElementById('graphStatus'));
         chart.draw(data,options);
+
+        //----------------------------------------------//
+        <?php if($numMonth > 0){ ?>
+        var data = google.visualization.arrayToDataTable([
+          ['miesiac',"ilosc"],
+          <?php
+          foreach ($invoiceGraphMonth as $key => $value) {
+            echo "['".$value["miesiac"]."',".$value["ilosc"]."],";
+          }
+          ?>
+        ]);
+
+          var options = {
+            title: "Ilość faktur w miesiącu",
+            series: [{'color': '#E7711B'}],
+            vAxis: {format: 'short'},
+          };
+          var chart = new google.visualization.ColumnChart(document.getElementById('graphMonth'));
+          chart.draw(data,options);
+          <?php } ?>
     }
   </script>
   </head>
   <body>
-    <div style ="width:50%">
-      <div id="test" style="width:500px; height:500px;"></div>
-    </div>
+      <div id="graphStatus" style="width:500px; height:500px; float:left;"></div>
+      <div id="graphMonth" style="width:800px; height:500px; float:left;"></div>
   </body>
 </html>

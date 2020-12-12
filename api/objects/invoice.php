@@ -166,12 +166,30 @@ class Invoice
     }
 
     function graphStatus(){
-      // Zapytanie wyswietlajace wszystkie towary w zaleznosci od ID faktury
+      // Zapytanie wyswietlajace wszystkie statusy poszczegolnych faktur
       $query = "SELECT s.status_faktury,
       COUNT(s.status_faktury) as ilosc
       FROM faktura f, status s
       WHERE f.id_status = s.id_status
       GROUP BY s.status_faktury";
+
+      // przygotowanie zapytania
+      $stmt = $this->connection->prepare($query);
+
+      // wykonanie zapytania
+      $stmt->execute();
+
+      return $stmt;
+    }
+
+    function graphMonth($year){
+      // Zapytanie wyswietlajace miesiace
+      $query = "SELECT MONTHNAME(data_wystawienia) as miesiac,
+      COUNT(MONTHNAME(data_wystawienia)) as ilosc
+      FROM faktura
+      WHERE YEAR(data_wystawienia) = ".$year. "
+      GROUP BY MONTHNAME(data_wystawienia)
+      ORDER BY data_wystawienia";
 
       // przygotowanie zapytania
       $stmt = $this->connection->prepare($query);
