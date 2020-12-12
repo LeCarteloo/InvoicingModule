@@ -1,0 +1,568 @@
+@import "https://use.fontawesome.com/releases/v5.5.0/css/all.css";
+*{
+	margin:0;
+}
+
+
+body{
+	background-color:#121212;
+}
+
+#menu{
+	position:fixed;
+	width:300px;
+	height:500px;
+	background-color:#131A25;
+	height:100%;
+}
+
+#logo{
+	width:100%;
+	height:200px;
+	background:url('../html/images/menu.png');
+	background-size:100% 100%;
+}
+
+#menuu{
+	width:100%;
+	color:#fff;
+	font-family:"Segoe UI";
+	margin-top:30px;
+	text-decoration:none;
+}
+
+#menuu a{
+	text-decoration:none;
+	color:#fff;
+}
+
+#menuu a:hover{
+	text-decoration:none;
+	color:silver;
+}
+
+a{
+	text-decoration:none;
+}
+
+.wybor{
+	width:100%;
+	height:40px;
+	margin-top:15px;
+	cursor:pointer;
+}
+
+.wybor:hover{
+	color:silver;
+}
+
+.wikona{
+	float:left;
+	font-size:35px;
+	width:60px;
+	text-align:center;
+	margin-left:30px;
+}
+
+.wtekst{
+	float:left;
+	font-size:24px;
+	width:150px;
+	margin-left:10px;
+	margin-top:3px;
+}
+
+#content{
+	width:100%;
+	background-color:#121212;
+}
+
+#gdzie{
+	width:100%;
+	height:70px;
+	border-bottom:1px solid #fff;
+	font-family:"Segoe UI";
+
+}
+
+#gdzie_tekst{
+	margin-left:330px;
+	color:#fff;
+	font-size:24px;
+
+}
+
+#gdzie_tekst i{
+	font-size:35px;
+	margin-top:15px;
+	margin-right:15px;
+}
+
+#dane{
+	width:100%;
+	height:200px;
+}
+
+#danel1{
+	margin-left:330px;
+	color:#fff;
+	font-family:"Segoe UI";
+	margin-top:30px;
+	font-size:18px;
+	height:30px;
+}
+
+.tnumer{
+	float:left;
+	width:150px;
+	text-align:right;
+	margin-right:15px;
+}
+
+.inumer{
+	float:left;
+	border:1px solid #fff;
+	width:200px;
+	height:30px;
+	font-size:18px;
+	text-align:center;
+}
+
+#numer_faktury{
+	float:left;
+	width:370px;
+	height:40px;
+	margin-right:10px;
+	line-height:30px;
+}
+
+#numer_NIP{
+	float:left;
+	width:250px;
+	height:40px;
+	margin-right:10px;
+	margin-left:15px;
+	line-height:30px;
+}
+
+.tnumer2{
+	float:left;
+	text-align:right;
+	margin-right:15px;
+}
+
+#adres{
+	float:left;
+	width:470px;
+	height:40px;
+	margin-right:10px;
+	line-height:30px;
+}
+
+.tnumer3{
+	float:left;
+	width:60px;
+	text-align:right;
+	margin-right:15px;
+}
+
+.inumer3{
+	float:left;
+	border:1px solid #fff;
+	width:340px;
+	height:30px;
+	font-size:18px;
+	text-align:center;
+}
+
+#adres i{
+	font-size:23px;
+	line-height:30px;
+	margin-left:10px;
+	cursor:pointer;
+}
+
+
+#data_wystawienia{
+	float:right;
+	margin-right:50px;
+	line-height:30px;
+}
+
+#danel2{
+	margin-left:330px;
+	color:#fff;
+	font-family:"Segoe UI";
+	margin-top:30px;
+	font-size:18px;
+
+}
+
+#towary{
+	margin-left:300px;
+}
+
+#towary2{
+	background-color:#151718;
+	width:1400px;
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.1); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #121212;
+  margin: 10% auto; /* 15% from the top and centered */
+  padding: 10px 0px;
+  width: 600px; /* Could be more or less, depending on screen size */
+  height:250px;
+  color:#fff;
+  font-family:"Segoe UI";
+}
+
+/* The Close Button */
+.close {
+  color: #fff;
+  float: right;
+  font-size: 40px;
+  font-weight: bold;
+  margin-top:-15px;
+  margin-right:10px
+}
+
+.close:hover,
+.close:focus {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  font-size:42px;
+}
+
+#modal_gora{
+	float:left;
+	width:100%;
+	height:40px;
+	color:#fff;
+	font-size:26px;
+	border-bottom:1px solid #fff;
+}
+
+#modal_gora i{
+	font-size:30px;
+	color:#fff;
+	float:left;
+	margin-right:15px;
+	margin-left:10px;
+}
+
+#modal_gtekst{
+	float:left;
+}
+
+#modal_srodek{
+	float:left;
+	border-bottom:1px solid #fff;
+	width:100%;
+	height:160px;
+}
+
+#srodek_tekst{
+	width:100%;
+	text-align:center;
+	font-size:22px;
+	margin-top:20px;
+}
+
+#srodek_input{
+	width:100%;
+	margin-top:30px;
+}
+
+.modal-content2 {
+  background-color: #121212;
+  margin: 10% auto; /* 15% from the top and centered */
+  padding: 10px 0px;
+  width: 600px; /* Could be more or less, depending on screen size */
+  min-height:300px;
+  color:#fff;
+  font-family:"Segoe UI";
+}
+
+#srodek_t{
+	float:left;
+	font-size:20px;
+	margin-left:23%;
+	margin-right:20px;
+}
+
+#srodek_input input{
+	border:1px solid #fff;
+	background-color:#121212;
+	color:#fff;
+	float:left;
+	font-size:20px;
+}
+
+#modal_dol{
+	float:left;
+	width:100%;
+}
+
+#dolb{
+	width:180px;
+	height:40px;
+	background-color:#131A25;
+	cursor:pointer;
+	line-height:40px;
+	font-size:17px;
+	text-align:center;
+	margin-top:10px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+table.blueTable {
+  border: 1px solid #151718;
+  background-color: #151718;
+  width: 100%;
+  text-align: center;
+  color:#fff;
+  font-family:"Segoe UI";
+}
+table.blueTable td, table.blueTable th {
+  padding: 5px 5px;
+}
+table.blueTable tbody td {
+  font-size: 13px;
+  padding: 6px 5px;
+
+}
+table.blueTable thead {
+	padding: 5px 0px;
+}
+
+table.blueTable thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+
+table.blueTable tfoot .links a{
+  display: inline-block;
+  background: #151718;
+  color: #FFFFFF;
+  padding: 0px 8px;
+  border-radius: 5px;
+}
+
+.drugiet{
+	width:100%;
+	height:30px;
+}
+
+.t1{
+	width:100%;
+	height:30px;
+	border:1px solid #fff;
+	font-size:15px;
+	line-height:27px;
+}
+
+.tx{
+	float:left;
+	width:85%;
+	height:30px;
+	border:1px solid #fff;
+	font-size:15px;
+	line-height:27px;
+}
+
+.drugiet i{
+	float:left;
+	font-size:20px;
+	line-height:33px;
+	margin-left:8px;
+	cursor:pointer;
+}
+
+.t2{
+	font-size:20px;
+}
+
+.t3{
+	font-size:30px;
+	color:#520101;
+	cursor:pointer;
+}
+
+#podsumowanie{
+	width:100%;
+	height:30px;
+	margin-top:15px;
+	font-family:"Segoe UI";
+
+}
+
+#dodaj_pozycje{
+	color:#fff;
+	float:left;
+	cursor:pointer;
+	margin-left:10px;
+}
+
+#dodaj_pozycje i{
+	font-size:23px;
+	float:left;
+	margin-right:5px;
+}
+
+#dodaj_pozycjet{
+	float:left;
+}
+
+#podsumowanie_ceny{
+	float:right;
+	width:50%;
+	color:#fff;
+	margin-right:60px;
+}
+
+#csuma{
+	float:right;
+	width:80px;
+	text-align:center;
+}
+
+#cnetto{
+	float:right;
+	width:150px;
+	text-align:center;
+}
+
+#cvat{
+	float:right;
+	width:180px;
+	text-align:center;
+}
+
+#cbrutto{
+	float:right;
+	width:160px;
+	text-align:center;
+}
+
+
+
+
+
+
+#szukaji{
+	width:240px;
+	height:34px;
+	color:white;
+	border:1px solid #fff;
+	line-height:34px;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:5px;
+}
+
+#szukaji input{
+	padding:6 5;
+	background-color:#121212;
+	border-radius:0px;
+	border:0px;
+	color:#fff;
+	font-size:16px;
+}
+
+#szukaji i{
+	margin-left:6px;
+	cursor:pointer;
+}
+
+
+#modal_dol2{
+	width:100%;
+	float:left;
+	border-top:1px solid #fff;
+	height:30px;
+	background-color:#121212;
+}
+
+#dolb2{
+	background-color:#00d6ac;
+	width:100px;
+	height:20px;
+	cursor:pointer;
+	text-align:center;
+	margin-top:5px;
+	margin-right:10px;
+	float:right;
+}
+
+#modal_srodek2{
+	float:left;
+	width:100%;
+	min-height:290px;
+}
+
+
+
+table.blueTable2 {
+  border: 1px solid #121212;
+  background-color: #121212;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  margin-top:10px;
+}
+table.blueTable2 td, table.blueTable2 th {
+  padding: 4px 1px;
+}
+table.blueTable2 tbody td {
+  font-size: 13px;
+  color:#fff;
+  font-family:"Segoe UI";
+
+}
+table.blueTable2 thead {
+	border-bottom:1px solid #fff;
+  }
+table.blueTable2 thead th {
+  font-size: 15px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+table.blueTable2 tfoot td {
+  font-size: 16px;
+}
+table.blueTable2 tfoot .links {
+  text-align: right;
+}
+table.blueTable2 tfoot .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+.przycviktt{
+	background-color:#0f6a58;
+	cursor:pointer;
+}

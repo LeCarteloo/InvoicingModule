@@ -157,11 +157,6 @@ a{
 	cursor:pointer;
 }
 
-#wystaw_faktureb a{
-	text-decoration:none;
-	color:#fff;
-}
-
 #wystaw_faktureb i{
 	font-size:20px;
 	margin-right:5px;
@@ -171,7 +166,7 @@ a{
 
 #tabelaa{
 	margin-left:300px;
-	margin-top:10px;
+	margin-top:40px;
 }
 
 #tabelka{
@@ -200,7 +195,7 @@ a{
 	font-family:"Segoe UI";
 	font-size:18px;
 	line-height:40px;
-	width:170px;
+	width:200px;
 	margin-left:56px;
 	text-align:center;
 }
@@ -211,7 +206,7 @@ a{
 	font-family:"Segoe UI";
 	font-size:18px;
 	line-height:40px;
-	width:150px;
+	width:180px;
 	margin-left:26px;
 	text-align:center;
 }
@@ -222,9 +217,21 @@ a{
 	font-family:"Segoe UI";
 	font-size:18px;
 	line-height:40px;
-	width:440px;
+	width:550px;
 	margin-left:26px;
 	text-align:center;
+}
+
+.tytulyt3{
+	float:left;
+	color:#fff;
+	font-family:"Segoe UI";
+	font-size:18px;
+	line-height:40px;
+	width:200px;
+	margin-left:56px;
+	text-align:center;
+	padding:0 0 0 20px;
 }
 
 table.blueTable {
@@ -246,12 +253,12 @@ table.blueTable td {
 
 
 #dnumer{
-	width:200px;
+	width:190px;
 }
 
 #dadres{
 
-	width:440px;
+	width:470px;
 }
 
 #dwystawienie{
