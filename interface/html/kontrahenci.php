@@ -1,3 +1,18 @@
+<?php
+
+include_once '../../config/database.php';
+include_once '../../api/objects/contractor.php';
+
+// uzyskanie polaczenie z baza danych
+$database = new Database();
+$db       = $database->getConnection();
+
+// zainicjalizowanie obiektu $contractor
+$contractor = new Contractor($db);
+?>
+
+
+
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">
@@ -38,51 +53,56 @@
 					Wyszukaj
 				</div>
 				<div id="szukaji">
-					<input type="text" value="NIP">
-					<i class="fas fa-search"></i>
+					<form action="" method="post">
+					<input type="text" name="NIP">
+					<button class="btn" name="submit"><i class="fas fa-search" type="submit"></i></button>
+					<?php
+					if (isset($_POST['NIP']) && isset($_POST['submit']) && !empty($_POST['NIP']))
+					  $stmtContractor = $contractor->searchContractor($_POST['NIP']);
+					else
+					  $stmtContractor = $contractor->read();
+					?>
+
+				</form>
 				</div>
 			</div>
 			<div id="tabelaa">
 				<div id="tabelka">
 					<div id="ttytuly">
 						<div id="ttttt">
-							<div class="tytulyt1">
-								Nazwa nabywcy
-							</div>
-							<div class="tytulyt2">
-								Adres
-							</div>
-							<div class="tytulyt">
-								NIP
-							</div>
-							<div class="tytulyt3">
-								E-mail
-							</div>
 						</div>
 					</div>
 					<div id="dane">
-						<table class="blueTable">
+							<table class="blueTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">Nazwa nabywcy</th>
+                      <th scope="col">Adres</th>
+                      <th scope="col">NIP</th>
+                      <th scope="col">E-mail</th>
+                    </tr>
+                </thead>
 
-							<tr>
-							<td id="dnumer">TEST</td>
-							<td id="dadres">TEST</td>
-							<td id="dwystawienie">TEST</td>
-							<td id="dsprzedaz">TEST</td>
+                <tbody>
+                    <?php
+										if($num=$stmtContractor->rowCount() > 0) {
+                    while ($row = $stmtContractor->fetch(PDO::FETCH_ASSOC)) {
+                    ?>
+                        <tr>
+                            <th scope="row"><?php echo $row['nazwa_nabywcy']; ?></th>
+                            <td><?php echo $row['adres']; ?></td>
+                            <td><?php echo $row['NIP']; ?></td>
+                            <td><?php echo $row['email_nabywcy']; ?></td>
 							</tr>
-
-							<tr>
-							<td id="dnumer">TEST</td>
-							<td id="dadres">TEST</td>
-							<td id="dwystawienie">TEST</td>
-							<td id="dsprzedaz">TEST</td>
-							</tr>
-
-							<tr>
-							<td id="dnumer">TEST</td>
-							<td id="dadres">TEST</td>
-							<td id="dwystawienie">TEST</td>
-							<td id="dsprzedaz">TEST</td>
-							</tr>
+						<?php }
+					}
+					else{
+						?>
+					<div class="test" style="padding:50px">
+						Brak nabywcy o podanym NIP
+					</div>
+				<?php } ?>
+						</tbody>
 						</table>
 					</div>
 				</div>

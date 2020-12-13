@@ -1,3 +1,16 @@
+<?php
+
+include_once '../../config/database.php';
+include_once '../../api/objects/cargo.php';
+
+// uzyskanie polaczenie z baza danych
+$database = new Database();
+$db       = $database->getConnection();
+
+// zainicjalizowanie obiektu $contractor
+$cargo = new Cargo($db);
+?>
+
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">
@@ -38,52 +51,53 @@
 					Wyszukaj
 				</div>
 				<div id="szukaji">
-					<input type="text" value="Nazwa">
-					<i class="fas fa-search"></i>
+					<form action="" method="post">
+					<input type="text" name="nazwa">
+					<button class="btn" name="submit"><i class="fas fa-search" type="submit"></i></button>
+					<?php
+					if (isset($_POST['nazwa']) && isset($_POST['submit']) && !empty($_POST['nazwa']))
+					  $stmtCargo = $cargo->searchCargo($_POST['nazwa']);
+					else
+					  $stmtCargo = $cargo->read();
+					?>
+
+				</form>
 				</div>
 			</div>
 			<div id="tabelaa">
 				<div id="tabelka">
-					<div id="ttytuly">
-						<div id="ttttt">
-							<div class="tytulyt1">
-								Nazwa towaru
-							</div>
-							<div class="tytulyt2">
-								Cena
-							</div>
-							<div class="tytulyt">
-								Jednostka miary
-							</div>
-							<div class="tytulyt3">
-								Stawka VAT
-							</div>
-						</div>
-					</div>
 					<div id="dane">
 						<table class="blueTable">
+								<thead>
+									<tr>
+										<th scope="col">Nazwa towaru</th>
+										<th scope="col">Cena</th>
+										<th scope="col">Jednostka miary</th>
+										<th scope="col">Stawka VAT</th>
+									</tr>
+							</thead>
 
-							<tr>
-							<td id="dnumer">TEST</td>
-							<td id="dadres">TEST</td>
-							<td id="dwystawienie">TEST</td>
-							<td id="dsprzedaz">TEST</td>
-							</tr>
-
-							<tr>
-							<td id="dnumer">TEST</td>
-							<td id="dadres">TEST</td>
-							<td id="dwystawienie">TEST</td>
-							<td id="dsprzedaz">TEST</td>
-							</tr>
-
-							<tr>
-							<td id="dnumer">TEST</td>
-							<td id="dadres">TEST</td>
-							<td id="dwystawienie">TEST</td>
-							<td id="dsprzedaz">TEST</td>
-							</tr>
-						</table>
+							<tbody>
+									<?php
+									if($num=$stmtCargo->rowCount() > 0) {
+									while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
+									?>
+											<tr>
+													<th scope="row"><?php echo $row['nazwa']; ?></th>
+													<td><?php echo $row['cena']; ?></td>
+													<td><?php echo $row['jednostka_miary']; ?></td>
+													<td><?php echo $row['stawka_vat']; ?></td>
+						</tr>
+					<?php }
+				}
+				else{
+					?>
+				<div class="test" style="padding:50px">
+					Brak towaru o podanej nazwie
+				</div>
+			<?php } ?>
+					</tbody>
+					</table>
 					</div>
 				</div>
 			</div>

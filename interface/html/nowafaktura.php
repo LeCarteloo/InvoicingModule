@@ -9,7 +9,7 @@
 
 			</div>
 			<div id="menuu">
-				<a href="home.html"><div class="wybor">
+				<a href="home.php"><div class="wybor">
 					<div class="wikona"><i class="fas fa-home"></i></div>
 					<div class="wtekst">Start</div></a>
 				</div>
@@ -17,11 +17,11 @@
 					<div class="wikona"><i class="fas fa-file-invoice-dollar"></i></div>
 					<div class="wtekst">Faktury</div>
 				</div></a>
-				<a href="kontrahenci.html"><div class="wybor">
+				<a href="kontrahenci.php"><div class="wybor">
 					<div class="wikona"><i class="fas fa-user"></i></div>
 					<div class="wtekst">Kontrahenci</div></a>
 				</div>
-				<a href="towary.html"><div class="wybor">
+				<a href="towary.php"><div class="wybor">
 					<div class="wikona"><i class="fas fa-warehouse"></i></div>
 					<div class="wtekst">Towary</div></a>
 				</div>
