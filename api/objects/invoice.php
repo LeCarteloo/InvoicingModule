@@ -199,5 +199,6 @@ class Invoice
 
       return $stmt;
     }
+
 }
 ?>

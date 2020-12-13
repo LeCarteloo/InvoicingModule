@@ -1,3 +1,18 @@
+<?php
+
+include_once '../../config/database.php';
+include_once '../../api/objects/invoice.php';
+include_once '../../api/objects/contractor.php';
+
+// uzyskanie polaczenie z baza danych
+$database = new Database();
+$db       = $database->getConnection();
+
+// zainicjalizowanie obiektu $contractor
+$invoice = new Invoice($db);
+$contractor = new Contractor($db);
+
+?>
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">
@@ -40,6 +55,19 @@
 							Numer faktury
 						</div>
 						<div class="inumer">
+							<?php
+							$query = "SELECT COUNT(*) as ilosc FROM faktura WHERE data_wystawienia = CURDATE()";
+							$stmt = $db->prepare($query);
+
+				      $stmt->execute();
+
+							$last_ID = $stmt->fetch(PDO::FETCH_ORI_FIRST);
+
+							// $last_ID =
+							//
+							// $numer_faktury =
+							echo $last_ID['ilosc']+1 . "/" . date("Y/md");
+							?>
 
 						</div>
 					</div>
@@ -49,7 +77,7 @@
 							Data wystawienia
 						</div>
 						<div class="inumer">
-
+							<?php echo date("Y-m-d"); ?>
 						</div>
 					</div>
 				</div>
@@ -58,7 +86,7 @@
 						<div class="tnumer">
 							Nazwa nabywcy
 						</div>
-						<div class="inumer">
+						<div class="inumer" >
 
 						</div>
 					</div>
@@ -76,7 +104,7 @@
 						<div class="tnumer3">
 							Adres
 						</div>
-						<div class="inumer3">
+						<div class="inumer3" id='test'>
 
 						</div>
 						<i class="fas fa-plus-circle" onclick="poka()"></i>
@@ -110,7 +138,27 @@
 										<div id="srodek_t">
 											NIP
 										</div>
-										<input type="text">
+										<form class="" method="post">
+										<input type="text" name="NIP">
+										</form>
+										<?php
+										if(isset($_POST['NIP']) && $result=$contractor->searchContractor($_POST['NIP']))
+											{
+												$num = $result->
+												if($)
+												$result
+												echo "<script>
+       									document.getElementById('test').innerHTML += 'Query did not work';
+      									</script>";
+											}
+										else {
+											echo "<script>
+											document.getElementById('test').innerHTML = '';
+											</script>";
+											// laczenie sie z modulem kontrahentow
+
+										}
+										?>
 									</div>
 								</div>
 								<div id="modal_dol">

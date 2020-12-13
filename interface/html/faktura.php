@@ -147,7 +147,7 @@ function sortTable(n) {
 									while ($row = $stmtInvoice->fetch(PDO::FETCH_ASSOC)) {
 									?>
 											<tr>
-												<th scope="row"><?php echo $row['numer_faktury']; ?></th>
+												<td><?php echo $row['numer_faktury']; ?></td>
 												<td><?php echo $row['data_wystawienia']; ?></td>
 												<td><?php echo $row['data_sprzedazy']; ?></td>
 												<td><?php echo $row['nazwa_nabywcy']; ?></td>
@@ -155,7 +155,7 @@ function sortTable(n) {
 												<td><?php echo $row['NIP']; ?></td>
 												<td><?php echo $row['email_nabywcy']; ?></td>
 												<td><?php echo $row['status_faktury']; ?></td>
-						</tr>
+											</tr>
 					<?php }
 				}
 				else{
