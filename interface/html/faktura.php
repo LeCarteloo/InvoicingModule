@@ -1,16 +1,3 @@
-<?php
-
-include_once '../../config/database.php';
-include_once '../../api/objects/invoice.php';
-
-// uzyskanie polaczenie z baza danych
-$database = new Database();
-$db       = $database->getConnection();
-
-// zainicjalizowanie obiektu $contractor
-$invoice = new Invoice($db);
-?>
-
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">

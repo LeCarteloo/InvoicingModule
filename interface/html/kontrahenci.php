@@ -56,13 +56,6 @@ $contractor = new Contractor($db);
 					<form action="" method="post">
 					<input type="text" name="NIP">
 					<button class="btn" name="submit"><i class="fas fa-search" type="submit"></i></button>
-					<?php
-					if (isset($_POST['NIP']) && isset($_POST['submit']) && !empty($_POST['NIP']))
-					  $stmtContractor = $contractor->searchContractor($_POST['NIP']);
-					else
-					  $stmtContractor = $contractor->read();
-					?>
-
 				</form>
 				</div>
 			</div>
@@ -82,26 +75,29 @@ $contractor = new Contractor($db);
                       <th scope="col">E-mail</th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    <?php
-										if($num=$stmtContractor->rowCount() > 0) {
-                    while ($row = $stmtContractor->fetch(PDO::FETCH_ASSOC)) {
-                    ?>
-                        <tr>
-                            <th scope="row"><?php echo $row['nazwa_nabywcy']; ?></th>
-                            <td><?php echo $row['adres']; ?></td>
-                            <td><?php echo $row['NIP']; ?></td>
-                            <td><?php echo $row['email_nabywcy']; ?></td>
-							</tr>
-						<?php }
-					}
-					else{
-						?>
-					<div class="test" style="padding:50px">
-						Brak nabywcy o podanym NIP
-					</div>
-				<?php } ?>
+                 <?php
+								 	if(isset($_POST['NIP']) && !empty($_POST['NIP']))
+										$json = @file_get_contents("http://localhost/Project/api/contractor/readContractor.php?input=".$_POST['NIP']);
+									else
+								  	$json = @file_get_contents("http://localhost/Project/api/contractor/readContractor.php");
+
+									if($json){
+
+									$arr = json_decode($json);
+                  foreach($arr->Kontrahenci as $key => $value) {
+                 ?>
+                <tr>
+                  <th scope="row"><?php echo $value->nazwa_nabywcy; ?></th>
+                  <td><?php echo $value->adres; ?></td>
+                  <td><?php echo $value->NIP; ?></td>
+                  <td><?php echo $value->email_nabywcy; ?></td>
+		             </tr>
+							   <?php }
+							 }
+							 else{
+								 echo "Nie znaleziono nadawcy o podanym NIP'ie.";
+							 }?>
 						</tbody>
 						</table>
 					</div>

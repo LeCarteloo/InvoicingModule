@@ -1,16 +1,3 @@
-<?php
-
-include_once '../../config/database.php';
-include_once '../../api/objects/cargo.php';
-
-// uzyskanie polaczenie z baza danych
-$database = new Database();
-$db       = $database->getConnection();
-
-// zainicjalizowanie obiektu $contractor
-$cargo = new Cargo($db);
-?>
-
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">
@@ -54,13 +41,6 @@ $cargo = new Cargo($db);
 					<form action="" method="post">
 					<input type="text" name="nazwa">
 					<button class="btn" name="submit"><i class="fas fa-search" type="submit"></i></button>
-					<?php
-					if (isset($_POST['nazwa']) && isset($_POST['submit']) && !empty($_POST['nazwa']))
-					  $stmtCargo = $cargo->searchCargo($_POST['nazwa']);
-					else
-					  $stmtCargo = $cargo->read();
-					?>
-
 				</form>
 				</div>
 			</div>
@@ -76,26 +56,29 @@ $cargo = new Cargo($db);
 										<th scope="col">Stawka VAT</th>
 									</tr>
 							</thead>
-
 							<tbody>
-									<?php
-									if($num=$stmtCargo->rowCount() > 0) {
-									while ($row = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
-									?>
-											<tr>
-													<th scope="row"><?php echo $row['nazwa']; ?></th>
-													<td><?php echo $row['cena']; ?></td>
-													<td><?php echo $row['jednostka_miary']; ?></td>
-													<td><?php echo $row['stawka_vat']; ?></td>
-						</tr>
-					<?php }
-				}
-				else{
-					?>
-				<div class="test" style="padding:50px">
-					Brak towaru o podanej nazwie
-				</div>
-			<?php } ?>
+								<?php
+								if(isset($_POST['nazwa']) && !empty($_POST['nazwa']))
+									$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php?input=".$_POST['nazwa']);
+								else
+									$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php");
+
+								if($json){
+
+								$arr = json_decode($json);
+								 foreach($arr->Towary as $key => $value) {
+								?>
+									<tr>
+	                  <th scope="row"><?php echo $value->nazwa; ?></th>
+	                  <td><?php echo $value->cena; ?></td>
+	                  <td><?php echo $value->jednostka_miary; ?></td>
+	                  <td><?php echo $value->stawka_vat; ?></td>
+			             </tr>
+								 <?php }
+			 				}
+			 				else{
+			 					echo "Nie znaleziono towaru o podanej nazwie.";
+			 				}?>
 					</tbody>
 					</table>
 					</div>
