@@ -69,7 +69,7 @@ if (isset($_GET['input'])) {
         http_response_code(200);
 
         // pokazanie faktury w formacie JSON
-        echo json_encode($invoiceArray["Faktury"]);
+        echo json_encode($invoiceArray);
 
     } else {
 

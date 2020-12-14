@@ -97,14 +97,6 @@ function sortTable(n) {
 					<form action="" method="post">
 					<input type="text" name="nazwa">
 					<button class="btn" name="submit"><i class="fas fa-search" type="submit"></i></button>
-					<?php
-					if (isset($_POST['nazwa']) && isset($_POST['submit']) && !empty($_POST['nazwa']))
-					  $stmtInvoice = $invoice->searchInvoice($_POST['nazwa']);
-					else
-						$stmtInvoice = $invoice->searchInvoice("");
-				//	else
-					//  $stmtInvoice = $invoice->sortInvoice();
-					?>
 				</form>
 				</div>
 			</div>
@@ -127,30 +119,34 @@ function sortTable(n) {
 										<th scope="col" onclick="sortTable(7)">Status</th>
 									</tr>
 							</thead>
-
 							<tbody>
-									<?php
-									if($num=$stmtInvoice->rowCount() > 0) {
-									while ($row = $stmtInvoice->fetch(PDO::FETCH_ASSOC)) {
-									?>
+								<?php
+								 if(isset($_POST['nazwa']) && !empty($_POST['nazwa']))
+									 $json = @file_get_contents("http://localhost/Project/api/invoice/readInvoice.php?input=".$_POST['nazwa']);
+								 else
+									 $json = @file_get_contents("http://localhost/Project/api/invoice/readInvoice.php?input=");
+
+								 if($json){
+
+								 $arr = json_decode($json);
+								 foreach($arr->Faktury as $key => $value) {
+								?>
 											<tr>
-												<td><?php echo $row['numer_faktury']; ?></td>
-												<td><?php echo $row['data_wystawienia']; ?></td>
-												<td><?php echo $row['data_sprzedazy']; ?></td>
-												<td><?php echo $row['nazwa_nabywcy']; ?></td>
-												<td><?php echo $row['adres']; ?></td>
-												<td><?php echo $row['NIP']; ?></td>
-												<td><?php echo $row['email_nabywcy']; ?></td>
-												<td><?php echo $row['status_faktury']; ?></td>
+												<td><?php echo $value->numer_faktury; ?></td>
+												<td><?php echo $value->data_wystawienia; ?></td>
+												<td><?php echo $value->data_sprzedazy; ?></td>
+												<td><?php echo $value->nazwa_nabywcy; ?></td>
+												<td><?php echo $value->adres; ?></td>
+												<td><?php echo $value->NIP; ?></td>
+												<td><?php echo $value->email_nabywcy; ?></td>
+												<td><?php echo $value->status_faktury; ?></td>
 											</tr>
 					<?php }
-				}
-				else{
-					?>
-				<div class="test" style="padding:50px">
-					Brak towaru o podanej nazwie
-				</div>
-			<?php } ?>
+					}
+					else{
+						echo "Nie znaleziono faktury.";
+					}
+						?>
 					</tbody>
 					</table>
 					</div>

@@ -17,6 +17,12 @@ $contractor = new Contractor($db);
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="../css/nowafaktura.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script>
+			$("#formTest").click(function(){
+				$("#tabela_towary").load("#tabela_towary");
+			});
+		</script>
 	</head>
 	<body>
 		<div id="menu">
@@ -77,7 +83,7 @@ $contractor = new Contractor($db);
 							Data wystawienia
 						</div>
 						<div class="inumer">
-							<?php echo date("Y-m-d"); ?>
+							<?php echo date("d.m.Y"); ?>
 						</div>
 					</div>
 				</div>
@@ -86,7 +92,7 @@ $contractor = new Contractor($db);
 						<div class="tnumer">
 							Nazwa nabywcy
 						</div>
-						<div class="inumer" >
+						<div class="inumer" id="nazwa_nabywcy">
 
 						</div>
 					</div>
@@ -95,7 +101,7 @@ $contractor = new Contractor($db);
 						<div class="tnumer2">
 							NIP
 						</div>
-						<div class="inumer">
+						<div class="inumer" id="NIP">
 
 						</div>
 					</div>
@@ -104,7 +110,7 @@ $contractor = new Contractor($db);
 						<div class="tnumer3">
 							Adres
 						</div>
-						<div class="inumer3" id='test'>
+						<div class="inumer3" id="adres_nabywcy">
 
 						</div>
 						<i class="fas fa-plus-circle" onclick="poka()"></i>
@@ -115,7 +121,7 @@ $contractor = new Contractor($db);
 							Data sprzedaży
 						</div>
 						<div class="inumer">
-
+							<input type="date" name="data_sprzedazy" >
 						</div>
 					</div>
 				</div>
@@ -142,21 +148,25 @@ $contractor = new Contractor($db);
 										<input type="text" name="NIP">
 										</form>
 										<?php
-										if(isset($_POST['NIP']) && $result=$contractor->searchContractor($_POST['NIP']))
-											{
-												$num = $result->
-												if($)
-												$result
-												echo "<script>
-       									document.getElementById('test').innerHTML += 'Query did not work';
-      									</script>";
-											}
-										else {
-											echo "<script>
-											document.getElementById('test').innerHTML = '';
-											</script>";
-											// laczenie sie z modulem kontrahentow
+	 								 	if(isset($_POST['NIP']) && !empty($_POST['NIP']))
+										{
+	 										$json = @file_get_contents("http://localhost/Project/api/contractor/readContractor.php?input=".$_POST['NIP']);
 
+		 									if(@$json){
+
+		 									$arr = json_decode($json);
+											foreach($arr->Kontrahenci as $key => $value){
+												echo "<script>
+												document.getElementById('nazwa_nabywcy').innerHTML = '$value->nazwa_nabywcy';
+												document.getElementById('NIP').innerHTML = '$value->NIP';
+												document.getElementById('adres_nabywcy').innerHTML = '$value->adres';
+												 </script>";
+											 	}
+											}
+											else { // jezeli nie ma w naszej bazie nadawcy o podanym NIP to pobieramy
+												// z bazy Kontrahentow
+												echo "Nie znaleziono nadawcy o podanym NIP.";
+											}
 										}
 										?>
 									</div>
@@ -188,7 +198,6 @@ $contractor = new Contractor($db);
 						</tr>
 						</thead>
 						<tbody>
-
 						<tr id="todleglosc">
 						<td><div class="t2">1</div></td>
 						<td><div class="drugiet"><div class="tx">Rower duży 4 koła</div><i class="fas fa-search" onclick="poka2()"></i></div></td>
@@ -201,50 +210,8 @@ $contractor = new Contractor($db);
 						<td><div class="t1">4000zł</div></td>
 						<td><div class="t3"><i class="fas fa-times"></i></div></td>
 						</tr>
-
-						<tr>
-						<td><div class="t2">2</div></td>
-						<td><div class="drugiet"><div class="tx">Rower duży 4 koła</div><i class="fas fa-search" onclick="poka2()"></i></div></td>
-						<td><div class="t1">sztuk</div></td>
-						<td><div class="t1">1</div></td>
-						<td><div class="t1">1200zł</div></td>
-						<td><div class="t1">20%</div></td>
-						<td><div class="t1">1300zł</div></td>
-						<td><div class="t1">500zł</div></td>
-						<td><div class="t1">4000zł</div></td>
-						<td><div class="t3"><i class="fas fa-times"></i></div></td>
-						</tr>
-
-						<tr>
-						<td><div class="t2">2</div></td>
-						<td><div class="drugiet"><div class="tx">Rower duży 4 koła</div><i class="fas fa-search" onclick="poka2()"></i></div></td>
-						<td><div class="t1">sztuk</div></td>
-						<td><div class="t1">1</div></td>
-						<td><div class="t1">1200zł</div></td>
-						<td><div class="t1">20%</div></td>
-						<td><div class="t1">1300zł</div></td>
-						<td><div class="t1">500zł</div></td>
-						<td><div class="t1">4000zł</div></td>
-						<td><div class="t3"><i class="fas fa-times"></i></div></td>
-						</tr>
-
-						<tr>
-						<td><div class="t2">2</div></td>
-						<td><div class="drugiet"><div class="tx">Rower duży 4 koła</div><i class="fas fa-search" onclick="poka2()"></i></div></td>
-						<td><div class="t1">sztuk</div></td>
-						<td><div class="t1">1</div></td>
-						<td><div class="t1">1200zł</div></td>
-						<td><div class="t1">20%</div></td>
-						<td><div class="t1">1300zł</div></td>
-						<td><div class="t1">500zł</div></td>
-						<td><div class="t1">4000zł</div></td>
-						<td><div class="t3"><i class="fas fa-times"></i></div></td>
-						</tr>
-
-
 						</tbody>
 					</table>
-
 					<div id="podsumowanie">
 						<div id="dodaj_pozycje">
 							<i class="fas fa-plus-circle"></i><div id="dodaj_pozycjet">Dodaj pozycję</div>
@@ -282,95 +249,48 @@ $contractor = new Contractor($db);
 										Wyszukaj
 									</div>
 										<div id="szukaji">
-											<input type="text">
-											<i class="fas fa-search"></i>
+											<form action="" method="post">
+											<input type="text" name="wyszukaj_towary">
+											<button type="button" name="submit" id="formTest"><i class="fas fa-search" type="submit"></i></button>
+											</form>
 									</div>
-									<table class="blueTable2">
+									<table class="blueTable2" id="tabela_towary">
 										<thead>
+
 										<tr>
 										<th>Nazwa</th>
 										<th>Jednostka miary</th>
 										<th>Cena netto</th>
 										<th>Stawka VAT</th>
+										<th>Akcja</th>
 										</tr>
 										</thead>
 										<tbody>
+											<?php
+											if(isset($_POST['wyszukaj_towary']) && !empty($_POST['wyszukaj_towary']))
+												$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php?input=".$_POST['wyszukaj_towary']);
+											else
+												$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php");
 
-										<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
+											if($json){
 
-										<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
-
-										<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
-
-										<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
-
-										<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
-
+											$arr = json_decode($json);
+											 foreach($arr->Towary as $key => $value) {
+											?>
 											<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
-
-											<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
-
-											<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
-
-										<tr>
-										<td>TEST</td>
-										<td>TEST</td>
-										<td>350.55 PLN</td>
-										<td>23%</td>
-										<td><div class="przycviktt">wybierz</div></td>
-										</tr>
-
+			                  <th scope="row"><?php echo $value->nazwa; ?></th>
+			                  <td><?php echo $value->cena; ?></td>
+			                  <td><?php echo $value->jednostka_miary; ?></td>
+			                  <td><?php echo $value->stawka_vat; ?></td>
+												<td><button type="button" name="wybierz">Wybierz</button></td>
+					             </tr>
+										 <?php }
+								 }
+								 else{
+									 echo "Nie znaleziono towaru o podanej nazwie.";
+								 }?>
 										</tbody>
 									</table>
-
 									<div id="modal_dol2">
 										<div id="dolb2" onclick="schowaj2()">
 											ZAMKNIJ
