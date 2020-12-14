@@ -1,0 +1,40 @@
+body{
+  padding: 0;
+}
+h2{
+  text-align: center;
+}
+p{
+  margin: 0px;
+}
+.dates{
+  margin-bottom: 30px;
+}
+.seller, .contractor{
+  width:50%;
+  float: left;
+  margin-bottom: 30px;
+}
+table{
+  width:100%;
+  border-collapse: collapse;
+}
+td, th{
+  text-align: center;
+  padding: 10px;
+}
+.tableTitle{
+  border-bottom: 2px solid black;
+}
+.tdBorder{
+  border-bottom: 2px solid black;
+}
+.doZaplaty, .forma, .rachunek{
+  margin-top: 30px;
+}
+.podpisWystawienie, .podpisOdbior{
+  margin-top: 100px;
+  text-align: center;
+  float:left;
+  width:50%;
+}

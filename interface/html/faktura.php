@@ -117,6 +117,7 @@ function sortTable(n) {
 										<th scope="col" onclick="sortTable(5)">NIP</th>
 										<th scope="col" onclick="sortTable(6)">E-mail</th>
 										<th scope="col" onclick="sortTable(7)">Status</th>
+										<th scope="col">Akcja</th>
 									</tr>
 							</thead>
 							<tbody>
@@ -140,6 +141,7 @@ function sortTable(n) {
 												<td><?php echo $value->NIP; ?></td>
 												<td><?php echo $value->email_nabywcy; ?></td>
 												<td><?php echo $value->status_faktury; ?></td>
+												<td> <?php echo '<a href="fakturaPodglad.php?numer_faktury=' .$value->numer_faktury .'"><button type="button">Podgląd</button></a>'?></td>
 											</tr>
 					<?php }
 					}

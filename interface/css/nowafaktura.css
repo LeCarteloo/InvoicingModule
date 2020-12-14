@@ -5,8 +5,68 @@
 
 
 body{
-	background-color:#121212;
+	background-color:#121212 !important;
 }
+
+#example_wrapper{
+
+		}
+
+		#example_length{
+			color:#fff;
+		}
+
+		#example_length select{
+			color:#fff;
+			background-color:#000;
+		}
+
+		#example_filter{
+			color:#fff;
+		}
+
+		#example_filter input{
+			background-color:black;
+			color:#fff;
+			border:1px solid #fff;
+		}
+
+		#example_info{
+			color:#fff;
+		}
+
+		.modal-header button{
+			color:white !important;
+			font-size:30px;
+		}
+
+		#example_previous{
+			color:#fff !important;
+			cursor:pointer;
+		}
+
+		#example_next{
+			color:#fff !important;
+			cursor:pointer;
+		}
+
+		.modal-footer button{
+			background-color:#00d6ac;
+			border:0px;
+			color:#fff;
+			font-size:16px;
+		}
+
+		.dataTables_empty{
+			color:#fff;
+		}
+
+		tbody tr{
+			background-color:#121212 !important;
+			color:#fff;
+		}
+
+
 
 #menu{
 	position:fixed;
@@ -229,7 +289,7 @@ a{
   margin: 10% auto; /* 15% from the top and centered */
   padding: 10px 0px;
   width: 600px; /* Could be more or less, depending on screen size */
-  height:250px;
+  height:400px !important;
   color:#fff;
   font-family:"Segoe UI";
 }
@@ -297,7 +357,7 @@ a{
   margin: 10% auto; /* 15% from the top and centered */
   padding: 10px 0px;
   width: 600px; /* Could be more or less, depending on screen size */
-  min-height:300px;
+  min-height:250px;
   color:#fff;
   font-family:"Segoe UI";
 }
