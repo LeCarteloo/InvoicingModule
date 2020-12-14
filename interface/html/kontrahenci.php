@@ -1,18 +1,3 @@
-<?php
-
-include_once '../../config/database.php';
-include_once '../../api/objects/contractor.php';
-
-// uzyskanie polaczenie z baza danych
-$database = new Database();
-$db       = $database->getConnection();
-
-// zainicjalizowanie obiektu $contractor
-$contractor = new Contractor($db);
-?>
-
-
-
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">
