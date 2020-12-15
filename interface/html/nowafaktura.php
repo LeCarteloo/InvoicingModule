@@ -108,13 +108,13 @@
 					<div class="wikona"><i class="fas fa-home"></i></div>
 					<div class="wtekst">Start</div></a>
 				</div>
-				<a href="kontrahenci.php"><div class="wybor">
-					<div class="wikona"><i class="fas fa-user"></i></div>
-					<div class="wtekst">Kontrahenci</div></a>
-				</div>
 				<a href="faktura.php"><div class="wybor">
 					<div class="wikona"><i class="fas fa-file-invoice-dollar"></i></div>
-					<div class="wtekst">Faktury</div>
+					<div class="wtekst">Faktury</div></a>
+				</div>
+				<a href="kontrahenci.php"><div class="wybor">
+					<div class="wikona"><i class="fas fa-user"></i></div>
+					<div class="wtekst">Kontrahenci</div>
 				</div></a>
 				<a href="towary.php"><div class="wybor">
 					<div class="wikona"><i class="fas fa-warehouse"></i></div>

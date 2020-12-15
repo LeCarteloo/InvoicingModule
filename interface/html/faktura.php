@@ -107,7 +107,7 @@ function sortTable(n) {
 				<div id="tabelka">
 					<div id="dane">
 						<table class="blueTable" id="blueTable">
-								<thead>
+							<thead>
 									<tr>
 										<th scope="col" onclick="sortTable(0)">Numer faktury</th>
 										<th scope="col" onclick="sortTable(1)">Data wystawienia</th>
@@ -146,11 +146,13 @@ function sortTable(n) {
 					<?php }
 					}
 					else{
-						echo "Nie znaleziono faktury.";
-					}
 						?>
 					</tbody>
 					</table>
+					<?php
+						echo '<div id="brakFaktury">Nie znaleziono faktury</div>';
+					}
+					?>
 					</div>
 				</div>
 			</div>

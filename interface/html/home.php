@@ -196,9 +196,11 @@ include_once '../../api/objects/invoice.php';
 			</div>
 			<div id="wykresy" style="margin-left:300px; ">
 				<div id="wykresy2" style="width:100%; margin-left:auto; margin-right:auto; min-height:300px;">
-					<div id="graphStatus"></div>
-		      <div id="graphMonth"></div>
-          <div id="graphCargo"></div>
+					<div id="graphStatus" style="height:400px; margin-left:210px; margin-top:60px;"></div>
+					<div id="graphMonth" style="height:400px;"></div>
+					<div id="graphCargo" style="height:400px;"></div>
+					
+					
 				</div>
 			</div>
 		</div>

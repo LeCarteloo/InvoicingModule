@@ -46,10 +46,6 @@
 			</div>
 			<div id="tabelaa">
 				<div id="tabelka">
-					<div id="ttytuly">
-						<div id="ttttt">
-						</div>
-					</div>
 					<div id="dane">
 							<table class="blueTable">
                   <thead>
@@ -81,10 +77,13 @@
 							   <?php }
 							 }
 							 else{
-								 echo "Nie znaleziono nadawcy o podanym NIP'ie.";
-							 }?>
+								 ?>
 						</tbody>
 						</table>
+						<?php
+						echo "<div id='braknipu'>Nie znaleziono nadawcy o podanym NIP'ie</div>";
+					}
+					?>
 					</div>
 				</div>
 			</div>

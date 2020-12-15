@@ -125,8 +125,24 @@ a{
 	margin-right:auto;
 }
 
+.btn{
+	border:0 !important;
+	font-size:20px;
+	color:#fff;
+	background-color:#121212;
+	height:100%;
+	width:5px;
+	height:10px;
+	padding:0;
+	margin-left:3px;
+}
+
+.btn:enabled{
+	border:0;
+}
+
 #szukaji input{
-	padding:6 5;
+	padding:9 8 5 4;
 	background-color:#121212;
 	border-radius:0px;
 	border:0px;
@@ -135,9 +151,9 @@ a{
 }
 
 #szukaji i{
-	margin-left:6px;
 	cursor:pointer;
 }
+
 
 #wystaw_fakture{
 	margin-left:300px;
@@ -244,11 +260,20 @@ table.blueTable {
   font-size:18px;
   color:#fff;
 }
+table.blueTable thead{
+	border-bottom:1px solid #fff;
+}
+
 table.blueTable td{
   padding: 6px 0px;
 }
 table.blueTable td {
   font-size: 18px;
+}
+
+table.blueTable th {
+  font-size: 18px;
+  padding:12px 0;
 }
 
 
@@ -281,4 +306,14 @@ table.blueTable td {
 	font-size:15px;
 	margin-left:7px;
 	cursor:pointer;
+}
+
+
+#braknipu{
+	color:#fff;
+	width:100%;
+	text-align:center;
+	font-size:30px;
+	font-family:"Segoe UI";
+	margin-top:250px;
 }
