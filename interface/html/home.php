@@ -199,11 +199,6 @@ include_once '../../api/objects/invoice.php';
 					<div id="graphStatus" style="height:400px; margin-left:210px; margin-top:60px;"></div>
 					<div id="graphMonth" style="height:400px;"></div>
 					<div id="graphCargo" style="height:400px;"></div>
-<<<<<<< HEAD
-					
-					
-=======
->>>>>>> 362be6ab10f30e3f638ec58b2f383429af83e7d8
 				</div>
 			</div>
 		</div>
