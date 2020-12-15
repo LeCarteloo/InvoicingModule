@@ -238,47 +238,8 @@
 
 						<tr id="todleglosc">
 						<td><div class="t2">1</div></td>
-						<td><div class="drugiet"><div class="tx">Rower duży 4 koła</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
-						<td><div class="t1">sztuk</div></td>
-						<td><div class="t1">1</div></td>
-						<td><div class="t1">1200zł</div></td>
-						<td><div class="t1">20%</div></td>
-						<td><div class="t1">1300zł</div></td>
-						<td><div class="t1">500zł</div></td>
-						<td><div class="t1">4000zł</div></td>
-						<td><div class="t3"><i class="fas fa-times"></i></div></td>
-						</tr>
-
-						<tr>
-						<td><div class="t2">2</div></td>
-						<td><div class="drugiet"><div class="tx">Rower duży 4 koła</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
-						<td><div class="t1">sztuk</div></td>
-						<td><div class="t1">1</div></td>
-						<td><div class="t1">1200zł</div></td>
-						<td><div class="t1">20%</div></td>
-						<td><div class="t1">1300zł</div></td>
-						<td><div class="t1">500zł</div></td>
-						<td><div class="t1">4000zł</div></td>
-						<td><div class="t3"><i class="fas fa-times"></i></div></td>
-						</tr>
-
-						<tr>
-						<td><div class="t2">2</div></td>
-						<td><div class="drugiet"><div class="tx">Rower duży 4 koła</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
-						<td><div class="t1">sztuk</div></td>
-						<td><div class="t1">1</div></td>
-						<td><div class="t1">1200zł</div></td>
-						<td><div class="t1">20%</div></td>
-						<td><div class="t1">1300zł</div></td>
-						<td><div class="t1">500zł</div></td>
-						<td><div class="t1">4000zł</div></td>
-						<td><div class="t3"><i class="fas fa-times"></i></div></td>
-						</tr>
-
-						<tr>
-						<td><div class="t2">2</div></td>
-						<td><div class="drugiet"><div class="tx">Rower duży 4 koła</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
-						<td><div class="t1">sztuk</div></td>
+						<td><div class="drugiet"><div class="tx">TESTOWY TOWAR</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
+						<td><div class="t1">KG</div></td>
 						<td><div class="t1">1</div></td>
 						<td><div class="t1">1200zł</div></td>
 						<td><div class="t1">20%</div></td>
@@ -353,11 +314,11 @@
 										   foreach($arr->Towary as $key => $value) {
 										  ?>
 										  <tr>
-											<th scope="row"><?php echo $value->nazwa; ?></th>
-											<td><?php echo $value->cena; ?></td>
-											<td><?php echo $value->jednostka_miary; ?></td>
-											<td><?php echo $value->stawka_vat; ?></td>
-											 <td><button type="button" data-role="search" name="wybierz" class="btn btn-success">Wybierz</button></td>
+											<th scope="row" style="text-align: center;"><?php echo $value->nazwa; ?></th>
+											<td style="text-align: center;"><?php echo $value->jednostka_miary; ?></td>
+											<td style="text-align: center;"><?php echo $value->cena; ?></td>
+											<td style="text-align: center;"><?php echo $value->stawka_vat; ?></td>
+											 <td style="text-align: center;"><button type="button" data-role="search" name="wybierz" class="btn btn-success">Wybierz</button></td>
 										   </tr>
 										 <?php }
 									 }

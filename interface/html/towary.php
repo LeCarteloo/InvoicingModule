@@ -76,11 +76,10 @@
 			             </tr>
 								 <?php }
 			 				}
-			 				else?>
+			 				else{?>
 					</tbody>
 					</table>
 					<?php
-						{
 			 					echo "<div id='braktowaru'>Nie znaleziono towaru o podanej nazwie.</div>";
 			 				}
 					?>
