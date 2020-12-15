@@ -200,5 +200,20 @@ class Invoice
       return $stmt;
     }
 
+    function graphCargo(){
+      $query = "SELECT t.nazwa, COUNT(ft.id_towar) as Ilosc
+      FROM towar t, faktura_towar ft
+      WHERE t.id_towar = ft.id_towar
+      GROUP BY t.nazwa
+      ORDER BY Ilosc DESC LIMIT 5";
+
+      $stmt = $this->connection->prepare($query);
+
+      // wykonanie zapytania
+      $stmt->execute();
+
+      return $stmt;
+    }
+
 }
 ?>

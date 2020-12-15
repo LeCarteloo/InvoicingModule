@@ -13,14 +13,17 @@ include_once '../../api/objects/invoice.php';
  $rok = 2020;
  $stmtGraphStatus = $invoice->graphStatus();
  $stmtGraphMonth = $invoice->graphMonth($rok);
+ $stmtGraphCargo = $invoice->graphCargo();
 
  $invoiceGraphStatus = array();
- $numStatus = $stmtGraphStatus->rowCount();
  $invoiceGraphStatus = $stmtGraphStatus->fetchAll (PDO::FETCH_ASSOC);
 
  $invoiceGraphMonth = array();
  $numMonth = $stmtGraphMonth->rowCount();
  $invoiceGraphMonth = $stmtGraphMonth->fetchAll (PDO::FETCH_ASSOC);
+
+ $invoiceGraphCargo = array();
+ $invoiceGraphCargo = $stmtGraphCargo->fetchAll (PDO::FETCH_ASSOC);
 
 ?>
 
@@ -42,7 +45,32 @@ include_once '../../api/objects/invoice.php';
         ?>
       ]);
         var options = {
-          title: "Faktury według statusów"
+          title: "Faktury według statusów",
+          backgroundColor: '#121212',
+          titleTextStyle: {
+          color: 'white'
+          },
+          hAxis: {
+              textStyle: {
+                  color: 'white'
+              },
+              titleTextStyle: {
+                  color: 'white'
+              }
+          },
+          vAxis: {
+              textStyle: {
+                  color: 'white'
+              },
+              titleTextStyle: {
+                  color: 'white'
+              }
+          },
+          legend: {
+              textStyle: {
+                  color: 'white'
+              }
+          }
         };
         var chart = new google.visualization.PieChart(document.getElementById('graphStatus'));
         chart.draw(data,options);
@@ -62,10 +90,77 @@ include_once '../../api/objects/invoice.php';
             title: "Ilość faktur w miesiącu",
             series: [{'color': '#E7711B'}],
             vAxis: {format: 'short'},
+            backgroundColor: '#121212',
+            titleTextStyle: {
+                color: 'white'
+            },
+            hAxis: {
+                textStyle: {
+                    color: 'white'
+                },
+                titleTextStyle: {
+                    color: 'white'
+                }
+            },
+            vAxis: {
+                textStyle: {
+                    color: 'white'
+                },
+                titleTextStyle: {
+                    color: 'white'
+                }
+            },
+            legend: {
+                textStyle: {
+                    color: 'white'
+                }
+            }
           };
-          var chart = new google.visualization.ColumnChart(document.getElementById('graphMonth'));
+          var chart = new google.visualization.LineChart(document.getElementById('graphMonth'));
           chart.draw(data,options);
           <?php } ?>
+
+           //----------------------------------------------//
+
+           var data = google.visualization.arrayToDataTable([
+             ['nazwa',"Ilosc"],
+             <?php
+             foreach ($invoiceGraphCargo as $key => $value) {
+               echo "['".$value["nazwa"]."',".$value["Ilosc"]."],";
+             }
+             ?>
+           ]);
+             var options = {
+               title: "TOP 5 produktów na fakturach",
+               backgroundColor: '#121212',
+               titleTextStyle: {
+               color: 'white'
+               },
+               hAxis: {
+                   textStyle: {
+                       color: 'white'
+                   },
+                   titleTextStyle: {
+                       color: 'white'
+                   }
+               },
+               vAxis: {
+                   textStyle: {
+                       color: 'white'
+                   },
+                   titleTextStyle: {
+                       color: 'white'
+                   }
+               },
+               legend: {
+                   textStyle: {
+                       color: 'white'
+                   }
+               }
+             };
+             var chart = new google.visualization.ColumnChart(document.getElementById('graphCargo'));
+             chart.draw(data,options);
+
     }
   </script>
 	</head>
@@ -103,6 +198,7 @@ include_once '../../api/objects/invoice.php';
 				<div id="wykresy2" style="width:100%; margin-left:auto; margin-right:auto; min-height:300px;">
 					<div id="graphStatus"></div>
 		      <div id="graphMonth"></div>
+          <div id="graphCargo"></div>
 				</div>
 			</div>
 		</div>
