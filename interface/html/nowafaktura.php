@@ -322,13 +322,13 @@ $contractor = new Contractor($db);
 						</div>
 						<div id="podsumowanie_ceny">
 							<div id="cbrutto">
-								00.00zł
+								-
 							</div>
 							<div id="cvat">
-								00.00zł
+								-
 							</div>
 							<div id="cnetto">
-								00.00zł
+								-
 							</div>
 							<div id="csuma">
 								Suma
@@ -382,7 +382,7 @@ $contractor = new Contractor($db);
 											<td style="text-align: center;"><?php echo $value->cena; ?></td>
 											<td style="text-align: center;"><?php echo $value->stawka_vat; ?></td>
 											<td style="text-align: center;">
-											<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz()">Wybierz</button>
+											<div class="TEST"><button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(1)">Wybierz</button></div>
 											</tr>
 										 <?php }
 									 }
@@ -415,6 +415,44 @@ $contractor = new Contractor($db);
 
 
 <script>
+let suma_netto=0,suma_vat=0,suma_brutto=0;
+let cena;
+function wybierz(index){
+ var table = document.getElementById('example');
+ for(var i = 1; i < table.rows.length; i++)
+{
+ table.rows[i].onclick = function()
+ {
+			//rIndex = this.rowIndex;
+		 cena = parseFloat(this.cells[2].innerHTML);
+		 var vat = parseInt(this.cells[3].innerHTML);
+		 var cena_netto = cena - ((cena*vat)/(100+vat)).toFixed(2);
+			document.getElementById("nazwa_towaru"+index).innerHTML = this.cells[0].innerHTML;
+			document.getElementById("jednostka_miary"+index).innerHTML = this.cells[1].innerHTML;
+			document.getElementById("cena_netto"+index).innerHTML = cena_netto + 'zł';
+			document.getElementById("stawka_vat"+index).innerHTML = this.cells[3].innerHTML + '%';
+ };
+}
+}
+
+function ilosc(index){
+var cena_netto = parseFloat(document.getElementById("cena_netto"+index).innerHTML);
+var vat = parseInt(document.getElementById("stawka_vat"+index).innerHTML);
+var ilosc = document.getElementById("iloscWybierz"+index).value;
+var wartosc_netto = (cena_netto * ilosc).toFixed(2);
+document.getElementById("wartosc_netto"+index).innerHTML = wartosc_netto + 'zł';
+document.getElementById("wartosc_vat"+index).innerHTML = ((cena - cena_netto) * ilosc).toFixed(2) + 'zł';
+document.getElementById("wartosc_brutto"+index).innerHTML = cena * ilosc + 'zł';
+
+suma_netto+=parseFloat(wartosc_netto);
+suma_vat+=parseFloat(((cena - cena_netto) * ilosc).toFixed(2));
+suma_brutto+=parseFloat(cena * ilosc);
+document.getElementById("cvat").innerHTML = suma_vat.toFixed(2) + 'zł';
+document.getElementById("cnetto").innerHTML = suma_netto.toFixed(2) + 'zł';
+document.getElementById("cbrutto").innerHTML = suma_brutto.toFixed(2) + 'zł';
+}
+
+
 	var modal = document.getElementById("myModal");
 	var modal2 = document.getElementById("myModal2");
 
@@ -462,38 +500,8 @@ $("#dodaj_pozycjet").click(function () {
 	<td><div class="t1" id="wartosc_brutto${rowIndex}">-</div></td>
 	<td><div class="t3"><i class="fas fa-times"></i></div></td>
 	</tr>`);
-	$('.btn').html('<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(${rowIndex})">Wybierz</button>');
+	$('.TEST').html(`<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(${rowIndex})">Wybierz</button>`);
 });
-
-let cena;
-function wybierz(index){
-	index = 1;
- var table = document.getElementById('example');
- for(var i = 1; i < table.rows.length; i++)
-{
- table.rows[i].onclick = function()
- {
-			//rIndex = this.rowIndex;
-		 cena = parseFloat(this.cells[2].innerHTML);
-		 var vat = parseInt(this.cells[3].innerHTML);
-		 var cena_netto = cena - ((cena*vat)/(100+vat)).toFixed(2);
-			document.getElementById("nazwa_towaru"+index).innerHTML = this.cells[0].innerHTML;
-			document.getElementById("jednostka_miary"+index).innerHTML = this.cells[1].innerHTML;
-			document.getElementById("cena_netto"+index).innerHTML = cena_netto + 'zł';
-			document.getElementById("stawka_vat"+index).innerHTML = this.cells[3].innerHTML + '%';
- };
-}
-}
-
-function ilosc(index){
-var cena_netto = parseFloat(document.getElementById("cena_netto"+index).innerHTML);
-var vat = parseInt(document.getElementById("stawka_vat"+index).innerHTML);
-var ilosc = document.getElementById("iloscWybierz"+index).value;
-var wartosc_netto = cena_netto * ilosc;
-document.getElementById("wartosc_netto"+index).innerHTML = wartosc_netto + 'zł';
-document.getElementById("wartosc_vat"+index).innerHTML = ((cena - cena_netto) * ilosc).toFixed(2) + 'zł';
-document.getElementById("wartosc_brutto"+index).innerHTML = cena * ilosc + 'zł';
-}
 
 </script>
 
