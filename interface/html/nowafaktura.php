@@ -299,14 +299,14 @@ $contractor = new Contractor($db);
 
 						<tr id="todleglosc">
 						<td><div class="t2" id="lp">1</div></td>
-						<td><div class="drugiet"><div class="tx" id="nazwa_towaru">TESTOWY TOWAR</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
-						<td><div class="t1" id="jednostka_miary">KG</div></td>
-						<td><div class="t1">  <input type="text" id="ilosc" value="1"> </div></td>
-						<td><div class="t1" id="cena_netto">1200zł</div></td>
-						<td><div class="t1" id="stawka_vat">20%</div></td>
-						<td><div class="t1" id="wartosc_netto">1300zł</div></td>
-						<td><div class="t1" id="wartosc_vat">500zł</div></td>
-						<td><div class="t1" id="wartosc_brutto">4000zł</div></td>
+						<td><div class="drugiet"><div class="tx" id="nazwa_towaru">-</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
+						<td><div class="t1" id="jednostka_miary">-</div></td>
+						<td><div class="t1">  <input type="number" id="iloscWybierz" onchange="ilosc()"> </div></td>
+						<td><div class="t1" id="cena_netto">-</div></td>
+						<td><div class="t1" id="stawka_vat">-</div></td>
+						<td><div class="t1" id="wartosc_netto">-</div></td>
+						<td><div class="t1" id="wartosc_vat">-</div></td>
+						<td><div class="t1" id="wartosc_brutto">-</div></td>
 						<td><div class="t3"><i class="fas fa-times"></i></div></td>
 						</tr>
 
@@ -352,12 +352,12 @@ $contractor = new Contractor($db);
 								  </div>
 								  <div class="modal-body">
 								   <div class="table-responsive">
-									  <table id="example" class="xxx">
+									  <table id="example">
 										<thead>
 										  <tr>
 										  <th>Nazwa</th>
 										  <th>Jednostka miary</th>
-										  <th>Cena netto</th>
+										  <th>Cena brutto</th>
 										  <th>Stawka VAT</th>
 										  <th>Akcja</th>
 										  </tr>
@@ -379,25 +379,45 @@ $contractor = new Contractor($db);
 											<td style="text-align: center;"><?php echo $value->jednostka_miary; ?></td>
 											<td style="text-align: center;"><?php echo $value->cena; ?></td>
 											<td style="text-align: center;"><?php echo $value->stawka_vat; ?></td>
-											<td style="text-align: center;"><button type="button" data-role="search" name="wybierz" class="btn btn-success" onclick="GetCellValues()">Wybierz</button></td>
+											<td style="text-align: center;">
+											<td<button type="button" name="wybierz" class="btn btn-success">Wybierz</button></td>
 											</tr>
 										 <?php }
 									 }
 									 else{
 									   echo '<div id="bbb" style="text-align:center; width:100%; height:50px; font-size:20px;">Nie znaleziono towaru o podanej nazwie.</div>';
 									 }?>
+
 									 <script>
 
-									 function GetCellValues() {
-									     var table = document.getElementById('xxx');
-									     for (var r = 0, n = table.rows.length; r < n; r++) {
-									         for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
-									             alert(table.rows[r].cells[c].innerHTML);
-									         }
-									     }
-									 }
+                var table = document.getElementById('example');
+								var cena;
+                for(var i = 1; i < table.rows.length; i++)
+                {
+                    table.rows[i].onclick = function()
+                    {
+                         //rIndex = this.rowIndex;
+												cena = parseFloat(this.cells[2].innerHTML);
+			 									var vat = parseInt(this.cells[3].innerHTML);
+			 									var cena_netto = cena - ((cena*vat)/(100+vat)).toFixed(2);
+                         document.getElementById("nazwa_towaru").innerHTML = this.cells[0].innerHTML;
+												 document.getElementById("jednostka_miary").innerHTML = this.cells[1].innerHTML;
+												 document.getElementById("cena_netto").innerHTML = cena_netto + 'zł';
+												 document.getElementById("stawka_vat").innerHTML = this.cells[3].innerHTML + '%';
+                    };
+                }
 
-									 </script>
+								function ilosc(){
+									var cena_netto = parseFloat(document.getElementById("cena_netto").innerHTML);
+									var vat = parseInt(document.getElementById("stawka_vat").innerHTML);
+									var ilosc = document.getElementById("iloscWybierz").value;
+									var wartosc_netto = cena_netto * ilosc;
+									document.getElementById("wartosc_netto").innerHTML = wartosc_netto + 'zł';
+									document.getElementById("wartosc_vat").innerHTML = ((cena - cena_netto) * ilosc).toFixed(2) + 'zł';
+									document.getElementById("wartosc_brutto").innerHTML = cena * ilosc + 'zł';
+								}
+
+         				</script>
 
 										</tbody>
 									  </table>

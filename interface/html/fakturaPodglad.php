@@ -59,7 +59,7 @@
         $VAT = $arr2['Faktury'][0]['produkt']['Towary'][$i]['stawka_vat'];
         $cena_netto = round($cena - (($cena*$VAT)/(100+$VAT)),2);
         $wartosc_netto =  $cena_netto * $ilosc;
-        $wartosc_vat = $cena_netto * $VAT;
+        $wartosc_vat = ($cena - $cena_netto) * $ilosc;
         $razem_netto += $wartosc_netto;
         $razem_VAT += $wartosc_vat;
         $razem_brutto += $cena * $ilosc;
