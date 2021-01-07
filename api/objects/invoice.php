@@ -12,6 +12,7 @@ class Invoice
     public $id_status;
     public $data_wystawienia;
     public $data_sprzedazy;
+    public $data_platnosci;
     //Kontrahenci
     public $id_nabywca;
     public $nazwa_nabywcy;
@@ -51,6 +52,7 @@ class Invoice
           OR f.numer_faktury LIKE '%" . $input . "%'
           OR f.data_wystawienia LIKE '%" . $input . "%'
           OR f.data_sprzedazy LIKE '%" . $input . "%'
+          OR f.data_platnosci LIKE '%" . $input . "%'
           OR s.status_faktury LIKE '%" . $input . "%'
           OR n.adres LIKE '%" . $input . "%')";
 
@@ -76,6 +78,7 @@ class Invoice
           OR f.numer_faktury LIKE '%" . $input . "%'
           OR f.data_wystawienia LIKE '%" . $input . "%'
           OR f.data_sprzedazy LIKE '%" . $input . "%'
+          OR f.data_platnosci LIKE '%" . $input . "%'
           OR s.status_faktury LIKE '%" . $input . "%'
           OR n.adres LIKE '%" . $input . "%')
           ORDER BY " . $column . " " . $type;
@@ -115,7 +118,7 @@ class Invoice
         // zapytanie do wstawiania rekordu
         $query = "INSERT INTO " . $this->table_name . "
         SET
-        numer_faktury=:numer_faktury, id_nabywca=:id_nabywca, id_status=:id_status, data_wystawienia=:data_wystawienia, data_sprzedazy=:data_sprzedazy";
+        numer_faktury=:numer_faktury, id_nabywca=:id_nabywca, id_status=:id_status, data_wystawienia=:data_wystawienia, data_sprzedazy=:data_sprzedazy,data_platnosci=:data_platnosci";
         // przygotowanie zapytania
         $stmt  = $this->connection->prepare($query);
 
@@ -125,12 +128,14 @@ class Invoice
         $this->id_status        = htmlspecialchars(strip_tags($this->id_status));
         $this->data_wystawienia = htmlspecialchars(strip_tags($this->data_wystawienia));
         $this->data_sprzedazy   = htmlspecialchars(strip_tags($this->data_sprzedazy));
+        $this->data_platnosci   = htmlspecialchars(strip_tags($this->data_platnosci));
         // podłączenie wartości do zapytania
         $stmt->bindParam(":numer_faktury", $this->numer_faktury);
         $stmt->bindParam(":id_nabywca", $this->id_nabywca);
         $stmt->bindParam(":id_status", $this->id_status);
         $stmt->bindParam(":data_wystawienia", $this->data_wystawienia);
         $stmt->bindParam(":data_sprzedazy", $this->data_sprzedazy);
+        $stmt->bindParam(":data_platnosci", $this->data_platnosci);
 
         // wykonanie zapytania
         if ($stmt->execute()) {

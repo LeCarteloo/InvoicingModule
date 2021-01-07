@@ -87,7 +87,7 @@ include_once '../../api/objects/invoice.php';
         ]);
 
           var options = {
-            title: "Ilość faktur w miesiącu",
+            title: "Ilość faktur w roku 2020",
             series: [{'color': '#E7711B'}],
             vAxis: {format: 'short'},
             backgroundColor: '#121212',

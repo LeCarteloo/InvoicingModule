@@ -1,3 +1,18 @@
+<?php
+
+include_once '../../config/database.php';
+include_once '../../api/objects/invoice.php';
+include_once '../../api/objects/contractor.php';
+
+// uzyskanie polaczenie z baza danych
+$database = new Database();
+$db       = $database->getConnection();
+
+// zainicjalizowanie obiektu $contractor
+$invoice = new Invoice($db);
+$contractor = new Contractor($db);
+
+?>
 <html lang="pl">
 	<head>
 		<meta charset="utf-8">
@@ -135,7 +150,19 @@
 							Numer faktury
 						</div>
 						<div class="inumer">
+							<?php
+							$query = "SELECT COUNT(*) as ilosc FROM faktura WHERE data_wystawienia = CURDATE()";
+							$stmt = $db->prepare($query);
 
+							$stmt->execute();
+
+							$last_ID = $stmt->fetch(PDO::FETCH_ORI_FIRST);
+
+							// $last_ID =
+							//
+							// $numer_faktury =
+							echo $last_ID['ilosc']+1 . "/" . date("Y/md");
+							?>
 						</div>
 					</div>
 
@@ -144,16 +171,26 @@
 							Data wystawienia
 						</div>
 						<div class="inumer">
-
+							<?php echo date("d.m.Y"); ?>
 						</div>
 					</div>
+
+					<div id="data_wystawienia">
+						<div class="tnumer">
+							Data płatności
+						</div>
+						<div class="inumer">
+							<input type="date" name="" value="" id="platnosc">
+						</div>
+					</div>
+
 				</div>
 				<div id="danel2">
 					<div id="numer_faktury">
 						<div class="tnumer">
 							Nazwa nabywcy
 						</div>
-						<div class="inumer">
+						<div class="inumer" id="nazwa_nabywcy">
 
 						</div>
 					</div>
@@ -162,7 +199,7 @@
 						<div class="tnumer2">
 							NIP
 						</div>
-						<div class="inumer">
+						<div class="inumer" id="NIP">
 
 						</div>
 					</div>
@@ -171,7 +208,7 @@
 						<div class="tnumer3">
 							Adres
 						</div>
-						<div class="inumer3">
+						<div class="inumer3" id="adres_nabywcy">
 
 						</div>
 						<i class="fas fa-plus-circle" onclick="poka2()"></i>
@@ -181,8 +218,8 @@
 						<div class="tnumer">
 							Data sprzedaży
 						</div>
-						<div class="inumer">
-
+						<div class="inumer" id="sprzedaz">
+							<input type="date" name="" value="" id="sprzedaz">
 						</div>
 					</div>
 				</div>
@@ -205,7 +242,31 @@
 										<div id="srodek_t">
 											NIP
 										</div>
-										<input type="text">
+										<form class="" method="post">
+										<input type="text" name="NIP">
+										</form>
+										<?php
+										if(isset($_POST['NIP']) && !empty($_POST['NIP']))
+										{
+											$json = @file_get_contents("http://localhost/Project/api/contractor/readContractor.php?input=".$_POST['NIP']);
+
+											if(@$json){
+
+											$arr = json_decode($json);
+											foreach($arr->Kontrahenci as $key => $value){
+												echo "<script>
+												document.getElementById('nazwa_nabywcy').innerHTML = '$value->nazwa_nabywcy';
+												document.getElementById('NIP').innerHTML = '$value->NIP';
+												document.getElementById('adres_nabywcy').innerHTML = '$value->adres';
+												 </script>";
+												}
+											}
+											else { // jezeli nie ma w naszej bazie nadawcy o podanym NIP to pobieramy
+												// z bazy Kontrahentow
+												echo "Nie znaleziono nadawcy o podanym NIP.";
+											}
+										}
+										?>
 									</div>
 								</div>
 								<div id="modal_dol">
@@ -237,15 +298,15 @@
 						<tbody>
 
 						<tr id="todleglosc">
-						<td><div class="t2">1</div></td>
-						<td><div class="drugiet"><div class="tx">TESTOWY TOWAR</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
-						<td><div class="t1">KG</div></td>
-						<td><div class="t1">1</div></td>
-						<td><div class="t1">1200zł</div></td>
-						<td><div class="t1">20%</div></td>
-						<td><div class="t1">1300zł</div></td>
-						<td><div class="t1">500zł</div></td>
-						<td><div class="t1">4000zł</div></td>
+						<td><div class="t2" id="lp">1</div></td>
+						<td><div class="drugiet"><div class="tx" id="nazwa_towaru">TESTOWY TOWAR</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
+						<td><div class="t1" id="jednostka_miary">KG</div></td>
+						<td><div class="t1">  <input type="text" id="ilosc" value="1"> </div></td>
+						<td><div class="t1" id="cena_netto">1200zł</div></td>
+						<td><div class="t1" id="stawka_vat">20%</div></td>
+						<td><div class="t1" id="wartosc_netto">1300zł</div></td>
+						<td><div class="t1" id="wartosc_vat">500zł</div></td>
+						<td><div class="t1" id="wartosc_brutto">4000zł</div></td>
 						<td><div class="t3"><i class="fas fa-times"></i></div></td>
 						</tr>
 
@@ -291,7 +352,7 @@
 								  </div>
 								  <div class="modal-body">
 								   <div class="table-responsive">
-									  <table id="example">
+									  <table id="example" class="xxx">
 										<thead>
 										  <tr>
 										  <th>Nazwa</th>
@@ -318,13 +379,26 @@
 											<td style="text-align: center;"><?php echo $value->jednostka_miary; ?></td>
 											<td style="text-align: center;"><?php echo $value->cena; ?></td>
 											<td style="text-align: center;"><?php echo $value->stawka_vat; ?></td>
-											 <td style="text-align: center;"><button type="button" data-role="search" name="wybierz" class="btn btn-success">Wybierz</button></td>
-										   </tr>
+											<td style="text-align: center;"><button type="button" data-role="search" name="wybierz" class="btn btn-success" onclick="GetCellValues()">Wybierz</button></td>
+											</tr>
 										 <?php }
 									 }
 									 else{
 									   echo '<div id="bbb" style="text-align:center; width:100%; height:50px; font-size:20px;">Nie znaleziono towaru o podanej nazwie.</div>';
 									 }?>
+									 <script>
+
+									 function GetCellValues() {
+									     var table = document.getElementById('xxx');
+									     for (var r = 0, n = table.rows.length; r < n; r++) {
+									         for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+									             alert(table.rows[r].cells[c].innerHTML);
+									         }
+									     }
+									 }
+
+									 </script>
+
 										</tbody>
 									  </table>
 									</div>

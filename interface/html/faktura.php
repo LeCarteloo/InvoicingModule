@@ -96,6 +96,7 @@ function sortTable(n) {
 										<th scope="col" onclick="sortTable(0)">Numer faktury</th>
 										<th scope="col" onclick="sortTable(1)">Data wystawienia</th>
 										<th scope="col" onclick="sortTable(2)">Data sprzedazy</th>
+										<th scope="col" onclick="sortTable(2)">Data płatności</th>
 										<th scope="col" onclick="sortTable(3)">Nazwa nabywcy</th>
 										<th scope="col" onclick="sortTable(4)">Adres</th>
 										<th scope="col" onclick="sortTable(5)">NIP</th>
@@ -120,6 +121,7 @@ function sortTable(n) {
 												<td><?php echo $value->numer_faktury; ?></td>
 												<td><?php echo $value->data_wystawienia; ?></td>
 												<td><?php echo $value->data_sprzedazy; ?></td>
+												<td><?php echo $value->data_platnosci; ?></td>
 												<td><?php echo $value->nazwa_nabywcy; ?></td>
 												<td><?php echo $value->adres; ?></td>
 												<td><?php echo $value->NIP; ?></td>

@@ -28,6 +28,7 @@ if (!empty($data->numer_faktury) &&
     !empty($data->id_status) &&
     !empty($data->data_wystawienia) &&
     !empty($data->data_sprzedazy) &&
+    !empty($data->data_platnosci) &&
     !empty($data->towary)) {
 
     // ustawienie wartosci faktury
@@ -36,6 +37,7 @@ if (!empty($data->numer_faktury) &&
     $invoice->id_status        = $data->id_status;
     $invoice->data_wystawienia = $data->data_wystawienia;
     $invoice->data_sprzedazy   = $data->data_sprzedazy;
+    $invoice->data_platnosci   = $data->data_platnosci;
 
     // utworz fakture
     if ($invoice->create()) {

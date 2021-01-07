@@ -55,6 +55,7 @@ if (isset($_GET['input'])) {
                 "numer_faktury" => $numer_faktury,
                 "data_wystawienia" => $data_wystawienia,
                 "data_sprzedazy" => $data_sprzedazy,
+                "data_platnosci" => $data_platnosci,
                 "nazwa_nabywcy" => $nazwa_nabywcy,
                 "adres" => $adres,
                 "NIP" => $NIP,
