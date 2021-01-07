@@ -22,6 +22,8 @@ $contractor = new Contractor($db);
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
 	<style>
 		@import "https://use.fontawesome.com/releases/v5.5.0/css/all.css";
@@ -281,7 +283,7 @@ $contractor = new Contractor($db);
 			<div id="towary">
 				<div id="towary2">
 
-					<table class="blueTable">
+					<table id="cargos" class="blueTable">
 						<thead>
 						<tr>
 						<th>Lp</th>
@@ -299,14 +301,14 @@ $contractor = new Contractor($db);
 
 						<tr id="todleglosc">
 						<td><div class="t2" id="lp">1</div></td>
-						<td><div class="drugiet"><div class="tx" id="nazwa_towaru">-</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
-						<td><div class="t1" id="jednostka_miary">-</div></td>
-						<td><div class="t1">  <input type="number" id="iloscWybierz" onchange="ilosc()"> </div></td>
-						<td><div class="t1" id="cena_netto">-</div></td>
-						<td><div class="t1" id="stawka_vat">-</div></td>
-						<td><div class="t1" id="wartosc_netto">-</div></td>
-						<td><div class="t1" id="wartosc_vat">-</div></td>
-						<td><div class="t1" id="wartosc_brutto">-</div></td>
+						<td><div class="drugiet"><div class="tx" id="nazwa_towaru1">-</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
+						<td><div class="t1" id="jednostka_miary1">-</div></td>
+						<td><div class="t1">  <input type="number" id="iloscWybierz1" onchange="ilosc(1)"> </div></td>
+						<td><div class="t1" id="cena_netto1">-</div></td>
+						<td><div class="t1" id="stawka_vat1">-</div></td>
+						<td><div class="t1" id="wartosc_netto1">-</div></td>
+						<td><div class="t1" id="wartosc_vat1">-</div></td>
+						<td><div class="t1" id="wartosc_brutto1">-</div></td>
 						<td><div class="t3"><i class="fas fa-times"></i></div></td>
 						</tr>
 
@@ -380,45 +382,13 @@ $contractor = new Contractor($db);
 											<td style="text-align: center;"><?php echo $value->cena; ?></td>
 											<td style="text-align: center;"><?php echo $value->stawka_vat; ?></td>
 											<td style="text-align: center;">
-											<td<button type="button" name="wybierz" class="btn btn-success">Wybierz</button></td>
+											<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz()">Wybierz</button>
 											</tr>
 										 <?php }
 									 }
 									 else{
 									   echo '<div id="bbb" style="text-align:center; width:100%; height:50px; font-size:20px;">Nie znaleziono towaru o podanej nazwie.</div>';
 									 }?>
-
-									 <script>
-
-                var table = document.getElementById('example');
-								var cena;
-                for(var i = 1; i < table.rows.length; i++)
-                {
-                    table.rows[i].onclick = function()
-                    {
-                         //rIndex = this.rowIndex;
-												cena = parseFloat(this.cells[2].innerHTML);
-			 									var vat = parseInt(this.cells[3].innerHTML);
-			 									var cena_netto = cena - ((cena*vat)/(100+vat)).toFixed(2);
-                         document.getElementById("nazwa_towaru").innerHTML = this.cells[0].innerHTML;
-												 document.getElementById("jednostka_miary").innerHTML = this.cells[1].innerHTML;
-												 document.getElementById("cena_netto").innerHTML = cena_netto + 'zł';
-												 document.getElementById("stawka_vat").innerHTML = this.cells[3].innerHTML + '%';
-                    };
-                }
-
-								function ilosc(){
-									var cena_netto = parseFloat(document.getElementById("cena_netto").innerHTML);
-									var vat = parseInt(document.getElementById("stawka_vat").innerHTML);
-									var ilosc = document.getElementById("iloscWybierz").value;
-									var wartosc_netto = cena_netto * ilosc;
-									document.getElementById("wartosc_netto").innerHTML = wartosc_netto + 'zł';
-									document.getElementById("wartosc_vat").innerHTML = ((cena - cena_netto) * ilosc).toFixed(2) + 'zł';
-									document.getElementById("wartosc_brutto").innerHTML = cena * ilosc + 'zł';
-								}
-
-         				</script>
-
 										</tbody>
 									  </table>
 									</div>
@@ -476,13 +446,54 @@ $contractor = new Contractor($db);
 	$('form').find("input[name='Age'][type='number']").val(data[2]);
 	} );
 
+	let rowIndex = 1;
 
-	/*
-	window.onclick = function(event) {
-	  if (event.target == modal) {
-		modal.style.display = "none";
-	  }
-	}*/
+$("#dodaj_pozycjet").click(function () {
+	rowIndex++;
+  $('#cargos tr:last').after(`<tr id="todleglosc">
+	<td><div class="t2" id="lp">${rowIndex}</div></td>
+	<td><div class="drugiet"><div class="tx" id="nazwa_towaru${rowIndex}">-</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
+	<td><div class="t1" id="jednostka_miary${rowIndex}">-</div></td>
+	<td><div class="t1">  <input type="number" id="iloscWybierz${rowIndex}" onchange="ilosc(${rowIndex})"> </div></td>
+	<td><div class="t1" id="cena_netto${rowIndex}">-</div></td>
+	<td><div class="t1" id="stawka_vat${rowIndex}">-</div></td>
+	<td><div class="t1" id="wartosc_netto${rowIndex}">-</div></td>
+	<td><div class="t1" id="wartosc_vat${rowIndex}">-</div></td>
+	<td><div class="t1" id="wartosc_brutto${rowIndex}">-</div></td>
+	<td><div class="t3"><i class="fas fa-times"></i></div></td>
+	</tr>`);
+	$('.btn').html('<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(${rowIndex})">Wybierz</button>');
+});
+
+let cena;
+function wybierz(index){
+	index = 1;
+ var table = document.getElementById('example');
+ for(var i = 1; i < table.rows.length; i++)
+{
+ table.rows[i].onclick = function()
+ {
+			//rIndex = this.rowIndex;
+		 cena = parseFloat(this.cells[2].innerHTML);
+		 var vat = parseInt(this.cells[3].innerHTML);
+		 var cena_netto = cena - ((cena*vat)/(100+vat)).toFixed(2);
+			document.getElementById("nazwa_towaru"+index).innerHTML = this.cells[0].innerHTML;
+			document.getElementById("jednostka_miary"+index).innerHTML = this.cells[1].innerHTML;
+			document.getElementById("cena_netto"+index).innerHTML = cena_netto + 'zł';
+			document.getElementById("stawka_vat"+index).innerHTML = this.cells[3].innerHTML + '%';
+ };
+}
+}
+
+function ilosc(index){
+var cena_netto = parseFloat(document.getElementById("cena_netto"+index).innerHTML);
+var vat = parseInt(document.getElementById("stawka_vat"+index).innerHTML);
+var ilosc = document.getElementById("iloscWybierz"+index).value;
+var wartosc_netto = cena_netto * ilosc;
+document.getElementById("wartosc_netto"+index).innerHTML = wartosc_netto + 'zł';
+document.getElementById("wartosc_vat"+index).innerHTML = ((cena - cena_netto) * ilosc).toFixed(2) + 'zł';
+document.getElementById("wartosc_brutto"+index).innerHTML = cena * ilosc + 'zł';
+}
 
 </script>
 
