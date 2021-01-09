@@ -151,7 +151,7 @@ $contractor = new Contractor($db);
 						<div class="tnumer">
 							Numer faktury
 						</div>
-						<div class="inumer">
+						<div class="inumer" id="nr_faktury">
 							<?php
 							$query = "SELECT COUNT(*) as ilosc FROM faktura WHERE data_wystawienia = CURDATE()";
 							$stmt = $db->prepare($query);
@@ -172,7 +172,7 @@ $contractor = new Contractor($db);
 						<div class="tnumer">
 							Data wystawienia
 						</div>
-						<div class="inumer">
+						<div class="inumer" id="data_wystawieniaC">
 							<?php echo date("d.m.Y"); ?>
 						</div>
 					</div>
@@ -300,7 +300,7 @@ $contractor = new Contractor($db);
 						<tbody>
 
 						<tr id="todleglosc">
-						<td><div class="t2" id="lp">1</div></td>
+						<td><div class="t2" id="lp1">1</div></td>
 						<td><div class="drugiet"><div class="tx" id="nazwa_towaru1">-</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
 						<td><div class="t1" id="jednostka_miary1">-</div></td>
 						<td><div class="t1">  <input type="number" id="iloscWybierz1" onchange="ilosc(1)"> </div></td>
@@ -309,7 +309,8 @@ $contractor = new Contractor($db);
 						<td><div class="t1" id="wartosc_netto1">-</div></td>
 						<td><div class="t1" id="wartosc_vat1">-</div></td>
 						<td><div class="t1" id="wartosc_brutto1">-</div></td>
-						<td><div class="t3"><i class="fas fa-times"></i></div></td>
+						<td><div class="t3" ></div></td>
+						<!-- <button id="delete" type="button" name="button"><i class="fas fa-times"></i></button> -->
 						</tr>
 
 
@@ -337,6 +338,19 @@ $contractor = new Contractor($db);
 
 					</div>
 				</div>
+				<div id="data_wystawienia">
+					<div class="tnumer">
+						Status faktury
+					</div>
+					<div class="inumer">
+						<input type="radio" name="status_faktury" value="1" id="oplacona">
+						<label>Opłacona</label><br>
+						<input type="radio" name="status_faktury" value="2" id="nie_oplacona" checked>
+						<label>Nie opłacona</label><br>
+					</div>
+				</div>
+
+					<button type="button" name="createInvoice" onclick="createInvoice()">Stwórz fakture</button>
 			</div>
 
 
@@ -377,7 +391,7 @@ $contractor = new Contractor($db);
 										   foreach($arr->Towary as $key => $value) {
 										  ?>
 										  <tr>
-											<th scope="row" style="text-align: center;"><?php echo $value->nazwa; ?></th>
+											<td scope="row" style="text-align: center;"><?php echo $value->nazwa; ?></td>
 											<td style="text-align: center;"><?php echo $value->jednostka_miary; ?></td>
 											<td style="text-align: center;"><?php echo $value->cena; ?></td>
 											<td style="text-align: center;"><?php echo $value->stawka_vat; ?></td>
@@ -400,17 +414,7 @@ $contractor = new Contractor($db);
 
 							  </div>
 							</div>
-
-
-
-
-
-
-
-
-
 		</div>
-
 
 
 
@@ -487,9 +491,10 @@ document.getElementById("cbrutto").innerHTML = suma_brutto.toFixed(2) + 'zł';
 	let rowIndex = 1;
 
 $("#dodaj_pozycjet").click(function () {
+	$('#delete').remove();
 	rowIndex++;
   $('#cargos tr:last').after(`<tr id="todleglosc">
-	<td><div class="t2" id="lp">${rowIndex}</div></td>
+	<td><div class="t2" id="lp${rowIndex}">${rowIndex}</div></td>
 	<td><div class="drugiet"><div class="tx" id="nazwa_towaru${rowIndex}">-</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
 	<td><div class="t1" id="jednostka_miary${rowIndex}">-</div></td>
 	<td><div class="t1">  <input type="number" id="iloscWybierz${rowIndex}" onchange="ilosc(${rowIndex})"> </div></td>
@@ -498,10 +503,48 @@ $("#dodaj_pozycjet").click(function () {
 	<td><div class="t1" id="wartosc_netto${rowIndex}">-</div></td>
 	<td><div class="t1" id="wartosc_vat${rowIndex}">-</div></td>
 	<td><div class="t1" id="wartosc_brutto${rowIndex}">-</div></td>
-	<td><div class="t3"><i class="fas fa-times"></i></div></td>
+	<td><div class="t3" id="delButton${rowIndex}"><button id="delete" type="button" name="button"><i class="fas fa-times"></i></button></div></td>
 	</tr>`);
+
 	$('.TEST').html(`<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(${rowIndex})">Wybierz</button>`);
 });
+
+$("#cargos").on('click', '#delete', function () {
+		var wartosc_n = parseFloat(document.getElementById("wartosc_netto"+rowIndex).innerHTML);
+		var wartosc_v = parseFloat(document.getElementById("wartosc_vat"+rowIndex).innerHTML);
+		var wartosc_b = parseFloat(document.getElementById("wartosc_brutto"+rowIndex).innerHTML);
+    $(this).closest('tr').remove();
+
+		suma_netto-=wartosc_n;
+		suma_vat-=wartosc_v;
+		suma_brutto-=wartosc_b;
+		document.getElementById("cvat").innerHTML = suma_vat.toFixed(2) + 'zł';
+		document.getElementById("cnetto").innerHTML = suma_netto.toFixed(2) + 'zł';
+		document.getElementById("cbrutto").innerHTML = suma_brutto.toFixed(2) + 'zł';
+
+		rowIndex--;
+		$(`#delButton${rowIndex}`).html(`<button id="delete" type="button" name="button"><i class="fas fa-times"></i></button>`);
+
+
+});
+
+function createInvoice(){
+	var numer_faktury = document.getElementById("nr_faktury");
+	var nip = document.getElementById("NIP");
+	var data_wystawienia = document.getElementById("data_wystawieniaC");
+	var data_platnosci = document.getElementById("platnosc");
+	var data_sprzedazy = document.getElementById("sprzedaz");
+	var oplacona = document.getElementById("oplacona").checked;
+	var nie_oplacona = document.getElementById("nie_oplacona").checked;
+	var status;
+	if(oplacona==true)
+		status = 1;
+	else
+		status = 2;
+
+
+
+}
 
 </script>
 
