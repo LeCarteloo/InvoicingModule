@@ -102,7 +102,12 @@
     </table>
 
     <div class="doZaplaty">
-      <p>Razem do zaplaty: <b><?php echo $razem_brutto . " zł";?></b> </p>
+      <p>Razem do zaplaty: <b><?php 
+      if($value->status_faktury == "Nie opłacona")
+        echo $razem_brutto . " zł";
+     else
+        echo "0 zł";?></b> </p>
+
     </div>
 
     <div class="forma">

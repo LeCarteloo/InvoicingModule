@@ -10,7 +10,7 @@ include_once '../../api/objects/invoice.php';
 
  $invoice = new Invoice($db);
 
- $rok = 2020;
+ $rok = 2021;
  $stmtGraphStatus = $invoice->graphStatus();
  $stmtGraphMonth = $invoice->graphMonth($rok);
  $stmtGraphCargo = $invoice->graphCargo();
@@ -87,7 +87,7 @@ include_once '../../api/objects/invoice.php';
         ]);
 
           var options = {
-            title: "Ilość faktur w roku 2020",
+            title: "Ilość faktur w roku 2021",
             series: [{'color': '#E7711B'}],
             vAxis: {format: 'short'},
             backgroundColor: '#121212',

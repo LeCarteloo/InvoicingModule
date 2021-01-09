@@ -14,12 +14,8 @@ $db       = $database->getConnection();
 $invoice = new Invoice($db);
 
 // sprawdzenie czy input jest ustawiony
-if (isset($_GET['input'])) {
-  // sprawdzenie czy jest ustawiona nazwa kolumny i typ sortowania
-    if (isset($_GET['column']) && isset($_GET['type']))
-        $stmtInvoice = $invoice->sortInvoice($_GET['input'], $_GET['column'], $_GET['type']); // jezeli typ i kolumna jest ustawiona to wywolujemy funkcje sort
-    else
-        $stmtInvoice = $invoice->searchInvoice($_GET['input']); // jezeli nie to wyszukujemy po wprowadzonym slowie
+if (isset($_GET['NIP']) && isset($_GET['Data_od']) && isset($_GET['Data_do'])) {
+   $stmtInvoice = $invoice->endPoint($_GET['NIP'],$_GET['Data_od'],$_GET['Data_do']); // jezeli nie to wyszukujemy po wprowadzonym slowie
 
     $num = $stmtInvoice->rowCount();
 
@@ -30,39 +26,15 @@ if (isset($_GET['input'])) {
         $invoiceArray["Faktury"] = array();
 
         while ($row = $stmtInvoice->fetch(PDO::FETCH_ASSOC)) {
-            $cargoArray           = array();
-            $cargoArray["Towary"] = array();
-
             extract($row);
-
-            $stmtCargo = $invoice->readCargo($id_faktura);
-
-            while ($row2 = $stmtCargo->fetch(PDO::FETCH_ASSOC)) {
-                extract($row2);
-
-                $cargoItem = array(
-                    "nazwa" => $nazwa,
-                    "cena" => $cena,
-                    "jednostka_miary" => $jednostka_miary,
-                    "stawka_vat" => $stawka_vat,
-                    "ilosc" => $ilość
-                );
-
-                array_push($cargoArray["Towary"], $cargoItem);
-            }
 
             $invoiceItem = array(
                 "id_faktura" => $id_faktura,
                 "numer_faktury" => $numer_faktury,
-                "data_wystawienia" => $data_wystawienia,
-                "data_sprzedazy" => $data_sprzedazy,
-                "data_platnosci" => $data_platnosci,
-                "nazwa_nabywcy" => $nazwa_nabywcy,
-                "adres" => $adres,
                 "NIP" => $NIP,
-                "email_nabywcy" => $email_nabywcy,
                 "status_faktury" => $status_faktury,
-                "produkt" => $cargoArray
+                "Wartosc_faktury_brutto" => $Wartosc_faktury_brutto,
+                "data_platnosci" => $data_platnosci,
             );
 
             array_push($invoiceArray["Faktury"], $invoiceItem);

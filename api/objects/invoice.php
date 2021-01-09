@@ -65,6 +65,27 @@ class Invoice
         return $stmt;
     }
 
+    function endPoint($NIP,$FROM,$TO){
+      // zapytanie ktore służy do wyszukiwaniu po polach
+      $query = "SELECT f.id_faktura, f.numer_faktury, n.NIP , s.status_faktury, SUM(ft.ilość * t.cena) AS Wartosc_faktury_brutto, f.data_platnosci
+      FROM faktura f, nabywca n , status s, faktura_towar ft, towar t
+      WHERE f.id_nabywca = n.id_nabywca
+      AND f.id_status = s.id_status
+      AND ft.id_faktura = f.id_faktura
+      AND ft.id_towar = t.id_towar
+      AND n.NIP = " . $NIP.
+      " AND f.data_wystawienia BETWEEN'" . $FROM . "' AND '" . $TO . "'GROUP BY (f.id_faktura)";
+
+      // przygotowanie zapytania
+      $stmt = $this->connection->prepare($query);
+
+      // wykonanie zapytania
+      $stmt->execute();
+
+      return $stmt;
+
+    }
+
     function sortInvoice($input, $column, $type)
     {
         // Zapytanie ktore służy do sortowania w zaleznosci od typu (DESC,ASC) i kolumny

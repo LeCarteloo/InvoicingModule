@@ -151,8 +151,8 @@ $contractor = new Contractor($db);
 						<div class="tnumer">
 							Numer faktury
 						</div>
-						<div class="inumer" id="nr_faktury">
-							<?php
+						<div class="inumer">
+							<input type="text" id="nr_faktury" name="" value="<?php
 							$query = "SELECT COUNT(*) as ilosc FROM faktura WHERE data_wystawienia = CURDATE()";
 							$stmt = $db->prepare($query);
 
@@ -164,7 +164,8 @@ $contractor = new Contractor($db);
 							//
 							// $numer_faktury =
 							echo $last_ID['ilosc']+1 . "/" . date("Y/md");
-							?>
+							?>" disabled>
+
 						</div>
 					</div>
 
@@ -172,8 +173,8 @@ $contractor = new Contractor($db);
 						<div class="tnumer">
 							Data wystawienia
 						</div>
-						<div class="inumer" id="data_wystawieniaC">
-							<?php echo date("d.m.Y"); ?>
+						<div class="inumer">
+							<input type="date" name="" value="<?php echo date("Y-m-d"); ?>" id="data_wystawieniaC" disabled>
 						</div>
 					</div>
 
@@ -221,7 +222,7 @@ $contractor = new Contractor($db);
 							Data sprzedaży
 						</div>
 						<div class="inumer" id="sprzedaz">
-							<input type="date" name="" value="" id="sprzedaz">
+							<input type="date" name="" value="" id="sprzedazINPUT">
 						</div>
 					</div>
 				</div>
@@ -257,6 +258,7 @@ $contractor = new Contractor($db);
 											$arr = json_decode($json);
 											foreach($arr->Kontrahenci as $key => $value){
 												echo "<script>
+												var id_nabywca = $value->id_nabywca;
 												document.getElementById('nazwa_nabywcy').innerHTML = '$value->nazwa_nabywcy';
 												document.getElementById('NIP').innerHTML = '$value->NIP';
 												document.getElementById('adres_nabywcy').innerHTML = '$value->adres';
@@ -286,6 +288,7 @@ $contractor = new Contractor($db);
 					<table id="cargos" class="blueTable">
 						<thead>
 						<tr>
+						<th style="display: none;"></th>
 						<th>Lp</th>
 						<th>Nazwa towaru</th>
 						<th>Jednostka miary</th>
@@ -300,6 +303,7 @@ $contractor = new Contractor($db);
 						<tbody>
 
 						<tr id="todleglosc">
+						<td style="display: none;"> <input type="hidden" id="id1" value=""> </td>
 						<td><div class="t2" id="lp1">1</div></td>
 						<td><div class="drugiet"><div class="tx" id="nazwa_towaru1">-</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
 						<td><div class="t1" id="jednostka_miary1">-</div></td>
@@ -371,6 +375,7 @@ $contractor = new Contractor($db);
 									  <table id="example">
 										<thead>
 										  <tr>
+										  <th style="display: none;"></th>
 										  <th>Nazwa</th>
 										  <th>Jednostka miary</th>
 										  <th>Cena brutto</th>
@@ -391,6 +396,7 @@ $contractor = new Contractor($db);
 										   foreach($arr->Towary as $key => $value) {
 										  ?>
 										  <tr>
+											<td style="display: none;"><?php echo $value->id_towar; ?> </td>
 											<td scope="row" style="text-align: center;"><?php echo $value->nazwa; ?></td>
 											<td style="text-align: center;"><?php echo $value->jednostka_miary; ?></td>
 											<td style="text-align: center;"><?php echo $value->cena; ?></td>
@@ -428,13 +434,14 @@ function wybierz(index){
  table.rows[i].onclick = function()
  {
 			//rIndex = this.rowIndex;
-		 cena = parseFloat(this.cells[2].innerHTML);
-		 var vat = parseInt(this.cells[3].innerHTML);
+		 cena = parseFloat(this.cells[3].innerHTML);
+		 var vat = parseInt(this.cells[4].innerHTML);
 		 var cena_netto = cena - ((cena*vat)/(100+vat)).toFixed(2);
-			document.getElementById("nazwa_towaru"+index).innerHTML = this.cells[0].innerHTML;
-			document.getElementById("jednostka_miary"+index).innerHTML = this.cells[1].innerHTML;
+		 	document.getElementById("id"+index).value = this.cells[0].innerHTML;
+			document.getElementById("nazwa_towaru"+index).innerHTML = this.cells[1].innerHTML;
+			document.getElementById("jednostka_miary"+index).innerHTML = this.cells[2].innerHTML;
 			document.getElementById("cena_netto"+index).innerHTML = cena_netto + 'zł';
-			document.getElementById("stawka_vat"+index).innerHTML = this.cells[3].innerHTML + '%';
+			document.getElementById("stawka_vat"+index).innerHTML = this.cells[4].innerHTML + '%';
  };
 }
 }
@@ -494,6 +501,7 @@ $("#dodaj_pozycjet").click(function () {
 	$('#delete').remove();
 	rowIndex++;
   $('#cargos tr:last').after(`<tr id="todleglosc">
+	<td style="display: none;"> <input type="hidden" id="id${rowIndex}" value=""> </td>
 	<td><div class="t2" id="lp${rowIndex}">${rowIndex}</div></td>
 	<td><div class="drugiet"><div class="tx" id="nazwa_towaru${rowIndex}">-</div><i class="fas fa-search" data-toggle="modal" data-target="#myModal"></i></div></td>
 	<td><div class="t1" id="jednostka_miary${rowIndex}">-</div></td>
@@ -529,11 +537,11 @@ $("#cargos").on('click', '#delete', function () {
 });
 
 function createInvoice(){
-	var numer_faktury = document.getElementById("nr_faktury");
-	var nip = document.getElementById("NIP");
-	var data_wystawienia = document.getElementById("data_wystawieniaC");
-	var data_platnosci = document.getElementById("platnosc");
-	var data_sprzedazy = document.getElementById("sprzedaz");
+	var numer_faktury = document.getElementById("nr_faktury").value;
+	var nip = document.getElementById("NIP").innerHTML;
+	var data_wystawienia = document.getElementById("data_wystawieniaC").value;
+	var data_platnosci = document.getElementById("platnosc").value;
+	var data_sprzedazy = document.getElementById("sprzedazINPUT").value;
 	var oplacona = document.getElementById("oplacona").checked;
 	var nie_oplacona = document.getElementById("nie_oplacona").checked;
 	var status;
@@ -542,8 +550,39 @@ function createInvoice(){
 	else
 		status = 2;
 
+		var text = `{
+            "numer_faktury": "${numer_faktury}",
+            "id_nabywca": ${id_nabywca},
+            "id_status": ${status},
+            "data_wystawienia": "${data_wystawienia}",
+            "data_sprzedazy": "${data_sprzedazy}",
+            "data_platnosci": "${data_platnosci}",
+            "towary":[`;
+							for(var i=1;i<=rowIndex;i++){
+								ilosc = document.getElementById("iloscWybierz"+i).value;
+								id = document.getElementById("id"+i).value;
+								if(i>1)
+									text += ","
+
+								text += `{
+                "ilosc": ${ilosc},
+                "id_towar": ${id}
+								}`;
+
+							}
+
+		text += "  ] }";
+
+		console.log(text);
+		$.ajax({
+				type: "POST",
+				data :text,
+				url: "http://localhost/Project/api/invoice/addInvoice.php",
+				contentType: "application/json"
+		});
 
 
+window.location.reload(true);
 }
 
 </script>

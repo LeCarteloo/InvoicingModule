@@ -42,6 +42,7 @@ function sortTable(n) {
 }
 
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 	<body>
 		<div id="menu">
@@ -93,6 +94,7 @@ function sortTable(n) {
 						<table class="blueTable" id="blueTable">
 							<thead>
 									<tr>
+										<th style="display: none;"></th>
 										<th scope="col" onclick="sortTable(0)">Numer faktury</th>
 										<th scope="col" onclick="sortTable(1)">Data wystawienia</th>
 										<th scope="col" onclick="sortTable(2)">Data sprzedazy</th>
@@ -102,7 +104,8 @@ function sortTable(n) {
 										<th scope="col" onclick="sortTable(5)">NIP</th>
 										<th scope="col" onclick="sortTable(6)">E-mail</th>
 										<th scope="col" onclick="sortTable(7)">Status</th>
-										<th scope="col">Akcja</th>
+										<th scope="col">Podgląd</th>
+										<th scope="col">Status</th>
 									</tr>
 							</thead>
 							<tbody>
@@ -118,6 +121,7 @@ function sortTable(n) {
 								 foreach($arr->Faktury as $key => $value) {
 								?>
 											<tr>
+												<td style="display: none;"><?php echo $value->id_faktura; ?></td>
 												<td><?php echo $value->numer_faktury; ?></td>
 												<td><?php echo $value->data_wystawienia; ?></td>
 												<td><?php echo $value->data_sprzedazy; ?></td>
@@ -128,6 +132,7 @@ function sortTable(n) {
 												<td><?php echo $value->email_nabywcy; ?></td>
 												<td><?php echo $value->status_faktury; ?></td>
 												<td> <?php echo '<a href="fakturaPodglad.php?numer_faktury=' .$value->numer_faktury .'"><button type="button">Podgląd</button></a>'?></td>
+												<td><button type="button" id="updateStatus" onclick="updateStatus('<?php echo $value->id_faktura; ?>','<?php echo $value->status_faktury; ?>')">Status</button></td>
 											</tr>
 					<?php }
 					}
@@ -144,4 +149,26 @@ function sortTable(n) {
 			</div>
 		</div>
 	</body>
+
+	<script>
+		function updateStatus(id,status){
+			var status_id=1;
+			if(status == "Opłacona")
+				status_id = 2;
+
+			var text = `{
+    	"id_faktura": ${id},
+    	"id_status": ${status_id}
+			}`;
+
+			$.ajax({
+					type: "POST",
+					data :text,
+					url: "http://localhost/Project/api/invoice/updateStatus.php",
+					contentType: "application/json"
+			});
+			setTimeout(window.location.reload(true), 1500);
+		}
+	</script>
+
 </html>
