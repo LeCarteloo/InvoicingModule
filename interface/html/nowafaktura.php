@@ -146,6 +146,36 @@ $contractor = new Contractor($db);
 				</div>
 			</div>
 			<div id="dane">
+			
+				<div id="dane13">
+					<div id="data_wystawienia">
+						<div class="tnumer2ggg">
+							Data sprzedaży
+						</div>
+						<div class="inumer" id="sprzedaz">
+							<input type="date" name="" value="" id="sprzedazINPUT">
+						</div>
+					</div>
+					
+					<div id="data_wystawienia">
+						<div class="tnumer2ggg">
+							Data wystawienia
+						</div>
+						<div class="inumer">
+							<input type="date" name="" value="<?php echo date("Y-m-d"); ?>" id="data_wystawieniaC" disabled>
+						</div>
+					</div>
+
+					<div id="data_wystawienia">
+						<div class="tnumer2ggg">
+							Data płatności
+						</div>
+						<div class="inumer">
+							<input type="date" name="" value="" id="platnosc">
+						</div>
+					</div>
+				</div>
+				
 				<div id="danel1">
 					<div id="numer_faktury">
 						<div class="tnumer">
@@ -169,25 +199,10 @@ $contractor = new Contractor($db);
 						</div>
 					</div>
 
-					<div id="data_wystawienia">
-						<div class="tnumer">
-							Data wystawienia
-						</div>
-						<div class="inumer">
-							<input type="date" name="" value="<?php echo date("Y-m-d"); ?>" id="data_wystawieniaC" disabled>
-						</div>
-					</div>
-
-					<div id="data_wystawienia">
-						<div class="tnumer">
-							Data płatności
-						</div>
-						<div class="inumer">
-							<input type="date" name="" value="" id="platnosc">
-						</div>
-					</div>
 
 				</div>
+				
+				
 				<div id="danel2">
 					<div id="numer_faktury">
 						<div class="tnumer">
@@ -216,15 +231,7 @@ $contractor = new Contractor($db);
 						</div>
 						<i class="fas fa-plus-circle" onclick="poka2()"></i>
 					</div>
-
-					<div id="data_wystawienia">
-						<div class="tnumer">
-							Data sprzedaży
-						</div>
-						<div class="inumer" id="sprzedaz">
-							<input type="date" name="" value="" id="sprzedazINPUT">
-						</div>
-					</div>
+					
 				</div>
 
 			</div>
@@ -342,7 +349,7 @@ $contractor = new Contractor($db);
 
 					</div>
 				</div>
-				<div id="data_wystawienia">
+				<div id="data_wystawienia_radio">
 					<div class="tnumer">
 						Status faktury
 					</div>
@@ -354,7 +361,7 @@ $contractor = new Contractor($db);
 					</div>
 				</div>
 
-					<button type="button" name="createInvoice" onclick="createInvoice()">Stwórz fakture</button>
+					<button type="button" id="przyciskfaktura" name="createInvoice" onclick="createInvoice()">Stwórz fakture</button>
 			</div>
 
 
@@ -497,7 +504,7 @@ document.getElementById("cbrutto").innerHTML = suma_brutto.toFixed(2) + 'zł';
 
 	let rowIndex = 1;
 
-$("#dodaj_pozycjet").click(function () {
+$("#dodaj_pozycje").click(function () {
 	$('#delete').remove();
 	rowIndex++;
   $('#cargos tr:last').after(`<tr id="todleglosc">

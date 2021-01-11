@@ -164,12 +164,29 @@ a{
 }
 
 #danel1{
-	margin-left:330px;
+	margin-left:370px;
+	margin-top:50px;
 	color:#fff;
 	font-family:"Segoe UI";
 	margin-top:30px;
 	font-size:18px;
+	height:70px;
+}
+
+#dane13{
+	float:right;
+	width:300px;
+	margin-top:-20px;
+	color:#fff;
+	font-size:18px;
+	margin-right:60px;
+}
+
+.tnumer2ggg{
+	width:100%;
 	height:30px;
+	text-align:center;
+	margin-top:5px;
 }
 
 .tnumer{
@@ -181,11 +198,18 @@ a{
 
 .inumer{
 	float:left;
-	border:1px solid #fff;
 	width:200px;
 	height:30px;
 	font-size:18px;
 	text-align:center;
+	border:1px solid #fff;
+}
+
+.inumer input{
+	width:200px;
+	height:30px;
+	font-size:50px;
+	background-color:#121212;
 }
 
 #numer_faktury{
@@ -249,13 +273,57 @@ a{
 	line-height:30px;
 }
 
+#data_wystawienia_radio{
+	float:right;
+	width:200px;
+	height:50px;
+	margin-right:110px;
+	margin-top:15px;
+}
+
+#data_wystawienia_radio .tnumer{
+	float:left;
+	color:#fff;
+}
+
+#data_wystawienia_radio .inumer{
+	float:left;
+	border:0px;
+}
+#data_wystawienia_radio .inumer input{
+	float:left;
+	font-size:10px;
+	 -webkit-transform: scale(0.7);
+	 width:20px;
+	 height:20px;
+}
+
+#data_wystawienia_radio .inumer label{
+	font-size:17px;
+	color:#fff;
+}
+
+
+.inumer input{
+	float:left;
+	font-size:18px;
+	color:#fff;
+}
+
+.inumer input::-webkit-calendar-picker-indicator {
+    color:red;
+	background-color:#fff;
+	cursor:pointer;
+	border:1px solid #fff;
+ }
+
 #danel2{
-	margin-left:330px;
+	margin-left:370px;
 	color:#fff;
 	font-family:"Segoe UI";
 	margin-top:30px;
 	font-size:18px;
-
+	background-color:red;
 }
 
 #towary{
@@ -289,7 +357,7 @@ a{
   margin: 10% auto; /* 15% from the top and centered */
   padding: 10px 0px;
   width: 600px; /* Could be more or less, depending on screen size */
-  height:380px !important;
+  min-height:380px !important;
   color:#fff;
   font-family:"Segoe UI";
 }
@@ -435,11 +503,18 @@ table.blueTable tfoot .links a{
 }
 
 .t1{
+	width:80px;
+	height:30px;
+	font-size:15px;
+	line-height:27px;
+}
+
+.t1 input{
 	width:100%;
 	height:30px;
 	border:1px solid #fff;
 	font-size:15px;
-	line-height:27px;
+	background-color:#151718;
 }
 
 .tx{
@@ -467,6 +542,35 @@ table.blueTable tfoot .links a{
 	font-size:30px;
 	color:#520101;
 	cursor:pointer;
+}
+
+.t3 i{
+	width:20px;
+	height:20px;
+	font-size:25px;
+	color:#fff;
+	background-color:#151718;
+}
+
+.t3 button{
+	background-color:#151718;
+	border:0px;
+}
+
+#przyciskfaktura{
+	margin-top:20px;
+	margin-left:110px;
+	width:140px;
+	height:30px;
+	background-color:#00d6ac;
+	border:0px;
+	color:#fff;
+	font-size:16px;
+	border-radius:5px;
+}
+
+#przyciskfaktura:hover{
+	background-color:#00a383;
 }
 
 #podsumowanie{
@@ -498,7 +602,7 @@ table.blueTable tfoot .links a{
 	float:right;
 	width:50%;
 	color:#fff;
-	margin-right:60px;
+	margin-right:80px;
 }
 
 #csuma{
