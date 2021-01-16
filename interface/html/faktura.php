@@ -131,8 +131,8 @@ function sortTable(n) {
 												<td><?php echo $value->NIP; ?></td>
 												<td><?php echo $value->email_nabywcy; ?></td>
 												<td><?php echo $value->status_faktury; ?></td>
-												<td> <?php echo '<a href="fakturaPodglad.php?numer_faktury=' .$value->numer_faktury .'"><button type="button">Podgląd</button></a>'?></td>
-												<td><button type="button" id="updateStatus" onclick="updateStatus('<?php echo $value->id_faktura; ?>','<?php echo $value->status_faktury; ?>')">Status</button></td>
+												<td> <?php echo '<a href="fakturaPodglad.php?numer_faktury=' .$value->numer_faktury .'"><button type="button" class="btn-podglad">Podgląd</button></a>'?></td>
+												<td><button type="button" class="btn-status" id="updateStatus" onclick="updateStatus('<?php echo $value->id_faktura; ?>','<?php echo $value->status_faktury; ?>')">Status</button></td>
 											</tr>
 					<?php }
 					}

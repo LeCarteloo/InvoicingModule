@@ -102,7 +102,7 @@
     </table>
 
     <div class="doZaplaty">
-      <p>Razem do zaplaty: <b><?php 
+      <p>Razem do zaplaty: <b><?php
       if($value->status_faktury == "Nie opłacona")
         echo $razem_brutto . " zł";
      else
@@ -116,7 +116,7 @@
     </div>
 
     <div class="rachunek">
-      <p>Numer rachunku bankowego sprzedawcy: <b>Numer konta bankowego</b> </p>
+      <p>Numer rachunku bankowego sprzedawcy: <b>53123456789707827426232168</b> </p>
     </div>
     <?php
   }

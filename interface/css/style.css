@@ -309,3 +309,32 @@ table.blueTable th {
 	font-family:"Segoe UI";
 	margin-top:250px;
 }
+.btn-podglad{
+	cursor: pointer;
+	width: 70px;
+  height: 30px;
+  background-color: #019175;
+  border: 0px;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.btn-podglad:hover{
+	background-color:#00a383;
+}
+
+.btn-status{
+	cursor: pointer;
+	width: 70px;
+  height: 30px;
+  background-color: #c25b02;
+  border: 0px;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.btn-status:hover{
+	background-color: orange;
+}
