@@ -460,6 +460,12 @@ function wybierz(index){
 			document.getElementById("jednostka_miary"+index).innerHTML = this.cells[2].innerHTML;
 			document.getElementById("cena_netto"+index).innerHTML = cena_netto + 'zł';
 			document.getElementById("stawka_vat"+index).innerHTML = this.cells[4].innerHTML + '%';
+
+			if(document.getElementById(`nazwa_towaru${rowIndex}`).innerHTML=="-")
+				document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
+			else
+				document.getElementById(`iloscWybierz${rowIndex}`).disabled = false;
+
  };
 }
 }
@@ -533,6 +539,9 @@ $("#dodaj_pozycje").click(function () {
 	</tr>`);
 
 	$('.TEST').html(`<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(${rowIndex})">Wybierz</button>`);
+
+		document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
+
 });
 
 $("#cargos").on('click', '#delete', function () {
@@ -613,6 +622,10 @@ window.location.reload(true);
 				$('.content').toggleClass("show");
 			});
 
+			if(document.getElementById(`nazwa_towaru${rowIndex}`).innerHTML=="-")
+				document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
+			else
+				document.getElementById(`iloscWybierz${rowIndex}`).disabled = false;
 </script>
 
 
