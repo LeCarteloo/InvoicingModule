@@ -730,3 +730,86 @@ table.blueTable2 tfoot .links a{
 	background-color:#0f6a58;
 	cursor:pointer;
 }
+
+.center, .content{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+
+.content{
+	 opacity: 0;
+	 visibility: hidden;
+		width: 400px;
+		height: 350px;
+		background: white;
+		box-shadow: 0 2px 12px 0 rgba(0,0,0,.4);
+}
+#zalozKonto.disabled{
+  pointer-events: none;
+}
+.content.show{
+	opacity: 1;
+	visibility: visible;
+}
+.header{
+	height: 68px;
+	background: #bd004f;
+	overflow: hidden;
+	border-radius: 3px 3px 0 0;
+	box-shadow: 0 2px 3px 0 rgba(0,0,0,.2);
+}
+
+.header h2{
+	margin-top: 20px;
+	color: white;
+	padding-left: 32px;
+	font-weight: bold;
+}
+.fa-times{
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	color: white;
+	font-size: 20px;
+	cursor: pointer;
+}
+.fa-check-circle{
+	font-size: 50px;
+	margin: 30px 0 0 160px;
+	color: #bd004f;
+	font-weight: bold;
+	height: 80px;
+	width: 80px;
+	text-align: center;
+}
+.text{
+	font-size: 30px;
+	padding-top: 10px;
+	text-align: center;
+}
+.line{
+	margin-top: 20px;
+	width: 100%;
+	height: 1px;
+	background: #bd004f;
+}
+.close-btn{
+	font-weight: bold;
+	position: absolute;
+	bottom: 12px;
+	right: 25px;
+	border: 2px solid #bd004f;
+	background: #bd004f;
+	border-radius: 3px;
+	color: white;
+	padding: 8px 10px;
+	font-size: 18px;
+	cursor: pointer;
+}
+.close-btn:hover{
+	font-weight: bold;
+	background: white;
+	color: #bd004f;
+}

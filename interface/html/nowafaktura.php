@@ -146,7 +146,7 @@ $contractor = new Contractor($db);
 				</div>
 			</div>
 			<div id="dane">
-			
+
 				<div id="dane13">
 					<div id="data_wystawienia">
 						<div class="tnumer2ggg">
@@ -156,7 +156,7 @@ $contractor = new Contractor($db);
 							<input type="date" name="" value="" id="sprzedazINPUT">
 						</div>
 					</div>
-					
+
 					<div id="data_wystawienia">
 						<div class="tnumer2ggg">
 							Data wystawienia
@@ -175,7 +175,7 @@ $contractor = new Contractor($db);
 						</div>
 					</div>
 				</div>
-				
+
 				<div id="danel1">
 					<div id="numer_faktury">
 						<div class="tnumer">
@@ -201,8 +201,8 @@ $contractor = new Contractor($db);
 
 
 				</div>
-				
-				
+
+
 				<div id="danel2">
 					<div id="numer_faktury">
 						<div class="tnumer">
@@ -231,7 +231,7 @@ $contractor = new Contractor($db);
 						</div>
 						<i class="fas fa-plus-circle" onclick="poka2()"></i>
 					</div>
-					
+
 				</div>
 
 			</div>
@@ -429,7 +429,18 @@ $contractor = new Contractor($db);
 							</div>
 		</div>
 
-
+		<div class="center">
+				<div class="content">
+					<div class="header">
+						<h2>Sukces</h2>
+						<div class="close-icon"><label for="click" class="fas fa-times"></label></div>
+					</div>
+					<label for="click" class="fas fa-check-circle fa-4x"></label>
+					<p class = "text">Przelew wykonany pomyślnie!</p>
+					<div class="line"></div>
+					<label for="click" class="close-btn">Zamknij</label>
+				</div>
+			</div>
 
 <script>
 let suma_netto=0,suma_vat=0,suma_brutto=0;
@@ -591,6 +602,16 @@ function createInvoice(){
 
 window.location.reload(true);
 }
+
+				$("#przyciskfaktura").click(function(){
+			   $('.content').toggleClass("show");
+			   $('#zalozKonto').addClass("disabled");});
+				 $('.close-icon').click(function(){
+				$('.content').toggleClass("show");
+			});
+			$('.close-btn').click(function(){
+				$('.content').toggleClass("show");
+			});
 
 </script>
 
