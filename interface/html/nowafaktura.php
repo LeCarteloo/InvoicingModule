@@ -260,6 +260,13 @@ $contractor = new Contractor($db);
 										{
 											$json = @file_get_contents("http://localhost/Project/api/contractor/readContractor.php?input=".$_POST['NIP']);
 
+											$curl = curl_init();
+
+											curl_setopt($curl,CURLOPT_URL,"http://localhost/Project/api/cargo/addCargoFromJSON.php");
+
+											curl_exec($curl);
+
+
 											if(@$json){
 
 											$arr = json_decode($json);
@@ -392,10 +399,7 @@ $contractor = new Contractor($db);
 										</thead>
 										<tbody>
 										  <?php
-										  if(isset($_POST['wyszukaj_towary']) && !empty($_POST['wyszukaj_towary']))
-											$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php?input=".$_POST['wyszukaj_towary']);
-										  else
-											$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php");
+												$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php");
 
 										  if($json){
 
@@ -432,11 +436,11 @@ $contractor = new Contractor($db);
 		<div class="center">
 				<div class="content">
 					<div class="header">
-						<h2>Sukces</h2>
+						<h2>Błąd</h2>
 						<div class="close-icon"><label for="click" class="fas fa-times"></label></div>
 					</div>
 					<label for="click" class="fas fa-check-circle fa-4x"></label>
-					<p class = "text">Przelew wykonany pomyślnie!</p>
+					<p class = "text">Wypełnij wszystkie pola!</p>
 					<div class="line"></div>
 					<label for="click" class="close-btn">Zamknij</label>
 				</div>

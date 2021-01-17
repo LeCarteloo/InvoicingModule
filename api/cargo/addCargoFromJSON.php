@@ -16,22 +16,24 @@ $db       = $database->getConnection();
 $cargo = new Cargo($db);
 
 // uzyskaj dane z pliku JSON
-$data = json_decode(file_get_contents("php://input"));
+$data = json_decode(file_get_contents("http://produkty-uslugi.herokuapp.com/products"));
 
 // sprawdzanie czy dane nie sa puste
-if (!empty($data->nazwa) &&
-    !empty($data->cena) &&
-    is_numeric($data->cena) &&
-    preg_match("/^[a-zA-Z]+$/", $data->jednostka_miary) &&
-    !empty($data->jednostka_miary) &&
-    !empty($data->stawka_vat) &&
-    is_numeric($data->stawka_vat)) {
+foreach($data as $key => $value) {
+
+if (!empty($value->nazwa) &&
+    !empty($value->cena_netto) &&
+    is_numeric($value->cena_netto) &&
+    preg_match("/^[a-zA-Z]+$/", $value->jednostka_miary) &&
+    !empty($value->jednostka_miary) &&
+    !empty($value->stawka) &&
+    is_numeric($value->stawka)) {
 
     // ustawienie wartosci towaru
-    $cargo->nazwa           = $data->nazwa;
-    $cargo->cena            = $data->cena;
-    $cargo->jednostka_miary = $data->jednostka_miary;
-    $cargo->stawka_vat      = $data->stawka_vat;
+    $cargo->nazwa           = $value->nazwa;
+    $cargo->cena            = $value->cena_netto;
+    $cargo->jednostka_miary = $value->jednostka_miary;
+    $cargo->stawka_vat      = $value->stawka;
 
     // utworz towar
     if ($cargo->create()) {
@@ -69,5 +71,6 @@ else {
     echo json_encode(array(
         "Błąd" => "Nie udalo sie stworzyc towaru, dane sa nie kompletne lub mają nie poprawny format."
     ));
+}
 }
 ?>
