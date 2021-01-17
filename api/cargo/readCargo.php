@@ -3,7 +3,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 // dodanie polaczenia z database.php i dodanie obiektu cargo.php
-include_once 'D:\Xampp\htdocs\Project\config\database.php';
+include_once '../../config/database.php';
 include_once '../objects/cargo.php';
 
 // uzyskanie polaczenie z baza danych

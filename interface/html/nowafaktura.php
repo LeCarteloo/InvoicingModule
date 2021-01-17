@@ -258,6 +258,13 @@ $contractor = new Contractor($db);
 										<?php
 										if(isset($_POST['NIP']) && !empty($_POST['NIP']))
 										{
+
+											$curl = curl_init();
+
+											curl_setopt($curl,CURLOPT_URL,"http://localhost/Project/api/cargo/addContractorFromJSON.php?nip=" .$_POST['NIP']);
+
+											curl_exec($curl);
+
 											$json = @file_get_contents("http://localhost/Project/api/contractor/readContractor.php?input=".$_POST['NIP']);
 
 											$curl = curl_init();
