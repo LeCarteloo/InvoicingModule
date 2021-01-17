@@ -260,13 +260,6 @@ $contractor = new Contractor($db);
 										{
 											$json = @file_get_contents("http://localhost/Project/api/contractor/readContractor.php?input=".$_POST['NIP']);
 
-											$curl = curl_init();
-
-											curl_setopt($curl,CURLOPT_URL,"http://localhost/Project/api/cargo/addCargoFromJSON.php");
-
-											curl_exec($curl);
-
-
 											if(@$json){
 
 											$arr = json_decode($json);
@@ -399,7 +392,10 @@ $contractor = new Contractor($db);
 										</thead>
 										<tbody>
 										  <?php
-												$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php");
+										  if(isset($_POST['wyszukaj_towary']) && !empty($_POST['wyszukaj_towary']))
+											$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php?input=".$_POST['wyszukaj_towary']);
+										  else
+											$json = @file_get_contents("http://localhost/Project/api/cargo/readCargo.php");
 
 										  if($json){
 
@@ -436,11 +432,11 @@ $contractor = new Contractor($db);
 		<div class="center">
 				<div class="content">
 					<div class="header">
-						<h2>Błąd</h2>
+						<h2>Sukces</h2>
 						<div class="close-icon"><label for="click" class="fas fa-times"></label></div>
 					</div>
 					<label for="click" class="fas fa-check-circle fa-4x"></label>
-					<p class = "text">Wypełnij wszystkie pola!</p>
+					<p class = "text">Przelew wykonany pomyślnie!</p>
 					<div class="line"></div>
 					<label for="click" class="close-btn">Zamknij</label>
 				</div>
@@ -464,12 +460,6 @@ function wybierz(index){
 			document.getElementById("jednostka_miary"+index).innerHTML = this.cells[2].innerHTML;
 			document.getElementById("cena_netto"+index).innerHTML = cena_netto + 'zł';
 			document.getElementById("stawka_vat"+index).innerHTML = this.cells[4].innerHTML + '%';
-
-			if(document.getElementById(`nazwa_towaru${rowIndex}`).innerHTML=="-")
-				document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
-			else
-				document.getElementById(`iloscWybierz${rowIndex}`).disabled = false;
-
  };
 }
 }
@@ -543,9 +533,6 @@ $("#dodaj_pozycje").click(function () {
 	</tr>`);
 
 	$('.TEST').html(`<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(${rowIndex})">Wybierz</button>`);
-
-		document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
-
 });
 
 $("#cargos").on('click', '#delete', function () {
@@ -612,7 +599,7 @@ function createInvoice(){
 				contentType: "application/json"
 		});
 
-
+location.href="potwierdzenieFaktura.php";
 window.location.reload(true);
 }
 
@@ -626,10 +613,6 @@ window.location.reload(true);
 				$('.content').toggleClass("show");
 			});
 
-			if(document.getElementById(`nazwa_towaru${rowIndex}`).innerHTML=="-")
-				document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
-			else
-				document.getElementById(`iloscWybierz${rowIndex}`).disabled = false;
 </script>
 
 
