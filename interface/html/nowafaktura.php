@@ -261,7 +261,7 @@ $contractor = new Contractor($db);
 
 											$curl = curl_init();
 
-											curl_setopt($curl,CURLOPT_URL,"http://localhost/Project/api/cargo/addContractorFromJSON.php?nip=" .$_POST['NIP']);
+											curl_setopt($curl,CURLOPT_URL,"http://localhost/Project/api/cargo/addCargoFromJSON.php");
 
 											curl_exec($curl);
 
@@ -279,9 +279,31 @@ $contractor = new Contractor($db);
 												 </script>";
 												}
 											}
-											else { // jezeli nie ma w naszej bazie nadawcy o podanym NIP to pobieramy
-												// z bazy Kontrahentow
-												echo "Nie znaleziono nadawcy o podanym NIP.";
+											else { // jezeli nie ma w naszej bazie nadawcy o podanym NIP to pobieramy z bazy Kontrahentow
+														$curl = curl_init();
+
+														curl_setopt($curl,CURLOPT_URL,"http://localhost/Project/api/contractor/addConractorFromJSON.php?NIP=" .$_POST['NIP']);
+
+														curl_exec($curl);
+
+														$json = @file_get_contents("http://localhost/Project/api/contractor/readContractor.php?input=".$_POST['NIP']);
+
+														if(@$json){
+
+														$arr = json_decode($json);
+														foreach($arr->Kontrahenci as $key => $value){
+															echo "<script>
+															var id_nabywca = $value->id_nabywca;
+															document.getElementById('nazwa_nabywcy').innerHTML = '$value->nazwa_nabywcy';
+															document.getElementById('NIP').innerHTML = '$value->NIP';
+															document.getElementById('adres_nabywcy').innerHTML = '$value->adres';
+															 </script>";
+															}
+													}
+													else{
+														echo "Nie ma takiego kontraktora!";
+													}
+
 											}
 										}
 										?>
@@ -451,7 +473,7 @@ $contractor = new Contractor($db);
 
 <script>
 let suma_netto=0,suma_vat=0,suma_brutto=0;
-let cena;
+let cena_brutto;
 function wybierz(index){
  var table = document.getElementById('example');
  for(var i = 1; i < table.rows.length; i++)
@@ -459,14 +481,19 @@ function wybierz(index){
  table.rows[i].onclick = function()
  {
 			//rIndex = this.rowIndex;
-		 cena = parseFloat(this.cells[3].innerHTML);
+		 cena_netto = parseFloat(this.cells[3].innerHTML);
 		 var vat = parseInt(this.cells[4].innerHTML);
-		 var cena_netto = cena - ((cena*vat)/(100+vat)).toFixed(2);
+		  cena_brutto = cena_netto + cena_netto*(vat/100).toFixed(2);
 		 	document.getElementById("id"+index).value = this.cells[0].innerHTML;
 			document.getElementById("nazwa_towaru"+index).innerHTML = this.cells[1].innerHTML;
 			document.getElementById("jednostka_miary"+index).innerHTML = this.cells[2].innerHTML;
 			document.getElementById("cena_netto"+index).innerHTML = cena_netto + 'zł';
 			document.getElementById("stawka_vat"+index).innerHTML = this.cells[4].innerHTML + '%';
+
+			if(document.getElementById(`nazwa_towaru${rowIndex}`).innerHTML=="-")
+				document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
+			else
+				document.getElementById(`iloscWybierz${rowIndex}`).disabled = false;
  };
 }
 }
@@ -476,13 +503,14 @@ var cena_netto = parseFloat(document.getElementById("cena_netto"+index).innerHTM
 var vat = parseInt(document.getElementById("stawka_vat"+index).innerHTML);
 var ilosc = document.getElementById("iloscWybierz"+index).value;
 var wartosc_netto = (cena_netto * ilosc).toFixed(2);
+console.log(cena_brutto);
 document.getElementById("wartosc_netto"+index).innerHTML = wartosc_netto + 'zł';
-document.getElementById("wartosc_vat"+index).innerHTML = ((cena - cena_netto) * ilosc).toFixed(2) + 'zł';
-document.getElementById("wartosc_brutto"+index).innerHTML = cena * ilosc + 'zł';
+document.getElementById("wartosc_vat"+index).innerHTML = ((cena_brutto - cena_netto) * ilosc).toFixed(2) + 'zł';
+document.getElementById("wartosc_brutto"+index).innerHTML = cena_brutto * ilosc + 'zł';
 
 suma_netto+=parseFloat(wartosc_netto);
-suma_vat+=parseFloat(((cena - cena_netto) * ilosc).toFixed(2));
-suma_brutto+=parseFloat(cena * ilosc);
+suma_vat+=parseFloat(((cena_brutto - cena_netto) * ilosc).toFixed(2));
+suma_brutto+=parseFloat(cena_brutto * ilosc);
 document.getElementById("cvat").innerHTML = suma_vat.toFixed(2) + 'zł';
 document.getElementById("cnetto").innerHTML = suma_netto.toFixed(2) + 'zł';
 document.getElementById("cbrutto").innerHTML = suma_brutto.toFixed(2) + 'zł';
@@ -538,6 +566,8 @@ $("#dodaj_pozycje").click(function () {
 	<td><div class="t1" id="wartosc_brutto${rowIndex}">-</div></td>
 	<td><div class="t3" id="delButton${rowIndex}"><button id="delete" type="button" name="button"><i class="fas fa-times"></i></button></div></td>
 	</tr>`);
+
+	document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
 
 	$('.TEST').html(`<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(${rowIndex})">Wybierz</button>`);
 });
@@ -605,20 +635,16 @@ function createInvoice(){
 				url: "http://localhost/Project/api/invoice/addInvoice.php",
 				contentType: "application/json"
 		});
-
 location.href="potwierdzenieFaktura.php";
-window.location.reload(true);
 }
 
-				$("#przyciskfaktura").click(function(){
-			   $('.content').toggleClass("show");
-			   $('#zalozKonto').addClass("disabled");});
-				 $('.close-icon').click(function(){
-				$('.content').toggleClass("show");
-			});
-			$('.close-btn').click(function(){
-				$('.content').toggleClass("show");
-			});
+if(document.getElementById(`nazwa_towaru${rowIndex}`).innerHTML=="-")
+	document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
+else
+	document.getElementById(`iloscWybierz${rowIndex}`).disabled = false;
+
+
+	console.log(document.getElementById(`nazwa_towaru${rowIndex}`));
 
 </script>
 

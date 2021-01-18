@@ -1,9 +1,9 @@
 <?php
 class Database{
-private $host = "www.mkwk019.cba.pl";
-private $database_name = "carteloo";
-private $username = "carteloo";
-private $password = "Carteloo223";
+private $host = "localhost"; //www.mkwk019.cba.pl
+private $database_name = "fakturowanie"; //carteloo
+private $username = "root"; //carteloo
+private $password = ""; //Carteloo223
 public $connection;
 
   public function getConnection(){

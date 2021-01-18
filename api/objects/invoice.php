@@ -67,7 +67,7 @@ class Invoice
 
     function endPoint($NIP,$FROM,$TO){
       // zapytanie ktore służy do wyszukiwaniu po polach
-      $query = "SELECT f.id_faktura, f.numer_faktury, n.NIP , s.status_faktury, SUM(ft.ilość * t.cena) AS Wartosc_faktury_brutto, f.data_platnosci
+      $query = "SELECT f.id_faktura, f.numer_faktury, n.NIP , s.status_faktury, SUM(ft.ilość * t.cena) AS Wartosc_faktury_brutto, f.data_wystawienia
       FROM faktura f, nabywca n , status s, faktura_towar ft, towar t
       WHERE f.id_nabywca = n.id_nabywca
       AND f.id_status = s.id_status

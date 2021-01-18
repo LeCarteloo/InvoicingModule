@@ -9,6 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../../config/database.php';
 include_once '../objects/contractor.php';
 
+
 $database = new Database();
 $db       = $database->getConnection();
 
@@ -16,27 +17,31 @@ $db       = $database->getConnection();
 $contractor = new Contractor($db);
 
 // uzyskaj dane z pliku JSON
-$data = json_decode(file_get_contents("http://tslezajsk.pl/Kontrahenci/api/contractor/readendpoint.php?nip=. '$_POST[AD]'"));
+$data = json_decode(file_get_contents("http://tslezajsk.pl/Kontrahenci/api/contractor/readendpoint.php?nip=". $_GET['NIP']));
+
+foreach ($data->KontrahenciEndPoint as $key => $value) {
 
 $check = array("/",","," ",".","*","-","_");
 
-$NIP = str_replace($check,'',$data->NIP);
+$NIP = str_replace($check,'',$value->nip);
 
 // sprawdzanie czy dane nie sa puste
-if (!empty($data->nazwa_nabywcy) &&
-    !empty($data->adres) &&
-    !empty($data->NIP) &&
+$adres = $value->ulica." ".$value->numer_budynku;
+
+if (!empty($value->nazwa_firmy) &&
+    !empty($adres) &&
+    !empty($NIP) &&
     $contractor->isValidNIP($NIP)) {
 
-    if(!empty($data->email_nabywcy) && !filter_var($data->email_nabywcy,FILTER_VALIDATE_EMAIL)){
+    if(!empty($value->email) && !filter_var($value->email,FILTER_VALIDATE_EMAIL)){
       goto error;
     }
     else{
-      $contractor->email_nabywcy = $data->email_nabywcy;
+      $contractor->email_nabywcy = $value->email;
     }
     // ustawienie wartosci kontrahenta
-    $contractor->nazwa_nabywcy = $data->nazwa_nabywcy;
-    $contractor->adres         = $data->adres;
+    $contractor->nazwa_nabywcy = $value->nazwa_firmy;
+    $contractor->adres         = $adres;
     $contractor->NIP           = $NIP;
     // utworz kontrahenta
     if ($contractor->create()) {
@@ -45,9 +50,9 @@ if (!empty($data->nazwa_nabywcy) &&
         http_response_code(201);
 
         // wyswietlenie wiadomosci ze udalo sie stworzyc kontrahenta
-        echo json_encode(array(
-            "Sukces" => "Kontrahent został utworzony."
-        ));
+        // echo json_encode(array(
+        //     "Sukces" => "Kontrahent został utworzony."
+        // ));
     }
 
     // jezeli nie udalo sie stworzyc
@@ -57,9 +62,9 @@ if (!empty($data->nazwa_nabywcy) &&
         http_response_code(503);
 
         // wyswietlenie wiadomosci ze nie udalo sie stworzyć kontrahenta
-        echo json_encode(array(
-            "Błąd" => "Nie udało się stworzyć kontrahenta."
-        ));
+        // echo json_encode(array(
+        //     "Błąd" => "Nie udało się stworzyć kontrahenta."
+        // ));
     }
 
 
@@ -74,5 +79,6 @@ else {
     echo json_encode(array(
         "Błąd" => "Nie udalo sie stworzyc kontrahenta, dane sa nie kompletne lub mają niepoprawny format."
     ));
+}
 }
 ?>

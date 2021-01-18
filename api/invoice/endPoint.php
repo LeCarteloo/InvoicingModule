@@ -34,7 +34,7 @@ if (isset($_GET['NIP']) && isset($_GET['Data_od']) && isset($_GET['Data_do'])) {
                 "NIP" => $NIP,
                 "status_faktury" => $status_faktury,
                 "Wartosc_faktury_brutto" => $Wartosc_faktury_brutto,
-                "data_platnosci" => $data_platnosci,
+                "data_wystawienia" => $data_wystawienia,
             );
 
             array_push($invoiceArray["Faktury"], $invoiceItem);

@@ -42,9 +42,9 @@ if (!empty($value->nazwa) &&
         http_response_code(201);
 
         // wyswietlenie wiadomosci ze udalo sie stworzyc towar
-        echo json_encode(array(
-            "Sukces" => "Towar został utworzony."
-        ));
+        // echo json_encode(array(
+        //     "Sukces" => "Towar został utworzony."
+        // ));
     }
 
     // jezeli nie udalo sie stworzyc
@@ -54,9 +54,9 @@ if (!empty($value->nazwa) &&
         http_response_code(503);
 
         // wyswietlenie wiadomosci ze nie udalo sie stworzyć towaru
-        echo json_encode(array(
-            "Błąd" => "Nie udało się stworzyć towaru."
-        ));
+        // echo json_encode(array(
+        //     "Błąd" => "Nie udało się stworzyć towaru."
+        // ));
     }
 
 
