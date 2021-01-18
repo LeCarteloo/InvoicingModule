@@ -566,7 +566,7 @@ $("#dodaj_pozycje").click(function () {
 	<td><div class="t1" id="wartosc_brutto${rowIndex}">-</div></td>
 	<td><div class="t3" id="delButton${rowIndex}"><button id="delete" type="button" name="button"><i class="fas fa-times"></i></button></div></td>
 	</tr>`);
-
+	document.getElementById(`iloscWybierz${rowIndex-1}`).disabled = true;
 	document.getElementById(`iloscWybierz${rowIndex}`).disabled = true;
 
 	$('.TEST').html(`<button type="button" name="wybierz" class="btn btn-success" onclick="wybierz(${rowIndex})">Wybierz</button>`);
