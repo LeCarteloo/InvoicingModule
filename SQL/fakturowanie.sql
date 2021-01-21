@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 17 Sty 2021, 16:37
+-- Czas generowania: 19 Sty 2021, 11:34
 -- Wersja serwera: 10.4.16-MariaDB
 -- Wersja PHP: 7.4.12
 
@@ -42,9 +42,6 @@ CREATE TABLE `faktura` (
 --
 
 INSERT INTO `faktura` (`id_faktura`, `numer_faktury`, `id_nabywca`, `id_status`, `data_wystawienia`, `data_sprzedazy`, `data_platnosci`) VALUES
-(1, '123456/0701/2021', 1, 1, '2021-01-07', '2021-01-07', '2021-01-14'),
-(2, '123456/0401/2021', 1, 1, '2021-01-07', '2021-01-07', '2021-01-14'),
-(3, '123456/0401/2021', 1, 1, '2021-01-07', '2021-01-07', '2021-01-14'),
 (4, '1/2021/0109', 1, 1, '2021-01-09', '2021-01-07', '2021-01-08'),
 (5, '2/2021/0109', 1, 1, '2021-01-09', '2021-01-14', '2021-02-03'),
 (6, '3/2021/0109', 1, 1, '2021-01-09', '2021-01-03', '2021-01-04'),
@@ -57,7 +54,16 @@ INSERT INTO `faktura` (`id_faktura`, `numer_faktury`, `id_nabywca`, `id_status`,
 (13, '1/2021/0116', 1, 2, '2021-01-16', '2021-01-01', '2021-01-31'),
 (14, '1/2021/0117', 1, 2, '2021-01-17', '2021-01-31', '2021-01-06'),
 (15, '2/2021/0117', 1, 2, '2021-01-17', '2021-01-13', '2021-01-22'),
-(16, '3/2021/0117', 1, 2, '2021-01-17', '2021-01-14', '2021-01-14');
+(16, '3/2021/0117', 1, 2, '2021-01-17', '2021-01-14', '2021-01-14'),
+(17, '4/2021/0117', 1, 2, '2021-01-17', '2021-02-05', '2021-01-06'),
+(18, '5/2021/0117', 1, 2, '2021-01-17', '2021-01-01', '2021-01-03'),
+(19, '6/2021/0117', 1, 1, '2021-01-17', '2021-01-06', '2021-01-31'),
+(20, '7/2021/0117', 1, 1, '2021-01-17', '2021-01-29', '2021-01-08'),
+(21, '1/2021/0118', 4, 2, '2021-01-18', '2021-01-14', '2021-01-15'),
+(22, '9/2021/0117', 1, 2, '2021-01-07', '2021-01-07', '2021-01-09'),
+(23, '1/2021/0119', 3, 2, '2021-01-19', '2021-01-01', '2021-01-31'),
+(24, '2/2021/0119', 1, 2, '2021-01-19', '2021-01-09', '2021-01-14'),
+(25, '3/2021/0119', 4, 1, '2021-01-19', '2021-01-18', '2021-01-24');
 
 -- --------------------------------------------------------
 
@@ -98,7 +104,19 @@ INSERT INTO `faktura_towar` (`id_faktura`, `id_towar`, `ilość`) VALUES
 (13, 1, 99),
 (14, 1, 15),
 (15, 1, 15),
-(16, 1, 15);
+(16, 1, 15),
+(17, 1, 2),
+(20, 95, 999),
+(21, 90, 15),
+(21, 96, 33),
+(22, 100, 22),
+(22, 99, 12),
+(23, 1, 15),
+(24, 4, 2),
+(24, 5, 13),
+(24, 6, 115),
+(25, 8, 15),
+(25, 6, 11);
 
 -- --------------------------------------------------------
 
@@ -119,9 +137,10 @@ CREATE TABLE `nabywca` (
 --
 
 INSERT INTO `nabywca` (`id_nabywca`, `nazwa_nabywcy`, `adres`, `NIP`, `email_nabywcy`) VALUES
-(1, 'Nabywca A', 'Adres NabywcaA 39-999 Rzeszów', '7622654927', 'nabywcaA@gmail.com'),
-(2, 'Nabywca B', 'Adres NabywcaB 39-999 Rzeszów', '3892726480', 'nabywcaB@wp.com'),
-(3, 'Nabywca C', 'Adres NabywcaC 39-999 Rzeszów', '5249366383', '');
+(1, 'Tracz Firma', 'Rzeszowska 13', '7622654927', 'email3@gmail.com'),
+(2, 'Kowalska', 'Krakowska 12', '3892726480', 'email2@gmail.com'),
+(3, 'Kokoski', 'Stara 16', '1010002231', 'email6@gmail.com'),
+(4, 'Skok', 'Starsza 17', '1040001590', 'email7@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -151,20 +170,31 @@ INSERT INTO `status` (`id_status`, `status_faktury`) VALUES
 CREATE TABLE `towar` (
   `id_towar` int(11) NOT NULL,
   `nazwa` varchar(40) NOT NULL,
-  `cena` float NOT NULL,
   `jednostka_miary` varchar(5) NOT NULL,
-  `stawka_vat` int(11) NOT NULL
+  `stawka_vat` int(11) NOT NULL,
+  `cena` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `towar`
 --
 
-INSERT INTO `towar` (`id_towar`, `nazwa`, `cena`, `jednostka_miary`, `stawka_vat`) VALUES
-(1, 'Towar1', 120.5, 'L', 23),
-(2, 'Towar2', 50.25, 'KG', 14),
-(3, 'Towar3', 25, 'M', 8),
-(4, 'Towar4', 60, 'KG', 23);
+INSERT INTO `towar` (`id_towar`, `nazwa`, `jednostka_miary`, `stawka_vat`, `cena`) VALUES
+(1, 'Skakanka', 'szt', 8, 20),
+(2, 'Winogrono', 'kg', 8, 50),
+(3, 'Jabłka', 'kg', 23, 8),
+(4, 'Krem do rąk', 'szt', 23, 10),
+(5, 'Szampon', 'szt', 23, 15),
+(6, 'Lakier do paznokci', 'szt', 23, 20),
+(7, 'Ziemniaki', 'kg', 23, 6),
+(8, 'Lenovo G580', 'szt', 23, 2500),
+(9, 'Ogórki', 'kg', 23, 14),
+(10, 'Pomidory', 'kg', 23, 11),
+(11, 'Mata do ćwiczń', 'szt', 23, 50),
+(12, 'Piłka ', 'szt', 23, 90),
+(13, 'Iphone 11', 'szt', 23, 4312),
+(14, 'Nokia 3310', 'szt', 23, 12000),
+(15, 'Czereśnie', 'kg', 23, 30);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -201,7 +231,8 @@ ALTER TABLE `status`
 -- Indeksy dla tabeli `towar`
 --
 ALTER TABLE `towar`
-  ADD PRIMARY KEY (`id_towar`);
+  ADD PRIMARY KEY (`id_towar`),
+  ADD UNIQUE KEY `nazwa` (`nazwa`);
 
 --
 -- AUTO_INCREMENT dla zrzuconych tabel
@@ -211,13 +242,13 @@ ALTER TABLE `towar`
 -- AUTO_INCREMENT dla tabeli `faktura`
 --
 ALTER TABLE `faktura`
-  MODIFY `id_faktura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_faktura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT dla tabeli `nabywca`
 --
 ALTER TABLE `nabywca`
-  MODIFY `id_nabywca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_nabywca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT dla tabeli `status`
@@ -229,7 +260,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT dla tabeli `towar`
 --
 ALTER TABLE `towar`
-  MODIFY `id_towar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_towar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=301;
 
 --
 -- Ograniczenia dla zrzutów tabel

@@ -17,7 +17,9 @@ $db       = $database->getConnection();
 $contractor = new Contractor($db);
 
 // uzyskaj dane z pliku JSON
-$data = json_decode(file_get_contents("http://tslezajsk.pl/Kontrahenci/api/contractor/readendpoint.php?nip=". $_GET['NIP']));
+$data = @json_decode(@file_get_contents("http://tslezajsk.pl/Kontrahenci/api/contractor/readendpoint.php?nip=". $_GET['NIP']));
+
+if($data){
 
 foreach ($data->KontrahenciEndPoint as $key => $value) {
 
@@ -79,6 +81,7 @@ else {
     echo json_encode(array(
         "Błąd" => "Nie udalo sie stworzyc kontrahenta, dane sa nie kompletne lub mają niepoprawny format."
     ));
+}
 }
 }
 ?>
